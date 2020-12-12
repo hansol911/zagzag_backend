@@ -1,5 +1,7 @@
 package com.jtrio.zagzag.model;
 
+import com.jtrio.zagzag.order.OrderDTO;
+import com.jtrio.zagzag.product.ProductDTO;
 import jdk.jfr.DataAmount;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,4 +31,13 @@ public class ProductOrder {
     private LocalDateTime created;
     @LastModifiedDate
     private LocalDateTime updated;
+
+    public OrderDTO toDTO(){
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setOrderPrice(orderPrice);
+        orderDTO.setProduct(product);
+        orderDTO.setCreated(created);
+
+        return orderDTO;
+    }
 }
