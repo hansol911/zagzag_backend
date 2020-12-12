@@ -6,7 +6,6 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Optional;
 
 @Data
 public class UserCommand {
