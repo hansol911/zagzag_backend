@@ -1,5 +1,7 @@
 package com.jtrio.zagzag.model;
 
+import com.jtrio.zagzag.order.OrderDTO;
+import com.jtrio.zagzag.review.ReviewDTO;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,11 +26,27 @@ public class Review {
     @ManyToMany
     private List<User> likers;
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @CreatedDate
     private LocalDateTime created;
     @LastModifiedDate
     private LocalDateTime updated;
+
+    public ReviewDTO toDTO(){
+        ReviewDTO reviewDTO = new ReviewDTO();
+        reviewDTO.setUser(user);
+        reviewDTO.setProduct(product);
+        reviewDTO.setContent(content);
+        reviewDTO.setImage(image);
+        reviewDTO.setProductScore(productScore);
+        reviewDTO.setDeliveryScore(deliveryScore);
+        reviewDTO.setCreated(created);
+
+        return reviewDTO;
+    }
 }
