@@ -31,6 +31,9 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private ProductOrder order;
 
     @CreatedDate
     private LocalDateTime created;
@@ -39,8 +42,9 @@ public class Review {
 
     public ReviewDTO toDTO(){
         ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setUser(user);
-        reviewDTO.setProduct(product);
+        reviewDTO.setUserId(user.getId());
+        reviewDTO.setProductId(product.getId());
+        reviewDTO.setOrderId(order.getId());
         reviewDTO.setContent(content);
         reviewDTO.setImage(image);
         reviewDTO.setProductScore(productScore);

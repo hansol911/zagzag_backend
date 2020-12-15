@@ -19,6 +19,7 @@ public class UserCommand {
         private String name;
         @NotBlank
         private Gender gender;
+        @NotBlank
         private String addr;
 
         public User toUser() {

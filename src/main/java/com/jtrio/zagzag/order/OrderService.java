@@ -22,7 +22,7 @@ public class OrderService {
     private final UserRepository userRepository;
 
     //주문하기
-    public OrderDTO orderProduct(OrderCommand command, Long userId) {
+    public OrderDTO createOrder(OrderCommand command, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
         Product product = productRepository.findById(command.getProductId()).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
         ProductOrder order = orderRepository.save(command.toOrder(user, product));

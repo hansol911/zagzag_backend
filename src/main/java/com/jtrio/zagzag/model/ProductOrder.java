@@ -35,7 +35,7 @@ public class ProductOrder {
     public OrderDTO toDTO(){
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setOrderPrice(orderPrice);
-        orderDTO.setProduct(product);
+        orderDTO.setProductId(product.getId());
         orderDTO.setCreated(created);
 
         return orderDTO;

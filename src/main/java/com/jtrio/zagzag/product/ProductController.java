@@ -2,11 +2,11 @@ package com.jtrio.zagzag.product;
 
 import com.jtrio.zagzag.model.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.stylesheets.LinkStyle;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("products")
@@ -15,13 +15,13 @@ public class ProductController {
     public final ProductService productService;
 
     @PostMapping
-    public ProductDTO registeredProduct(@RequestBody ProductCommand command) {
-        return productService.registeredProduct(command);
+    public ProductDTO createProduct(@RequestBody @Valid ProductCommand command) {
+        return productService.createProduct(command);
     }
 
     @GetMapping
-    public List<Product> findProductByCategory(@RequestParam Long categoryId){
-        return productService.findProductByCategory(categoryId);
+    public List<Product> findProductByCategory(@RequestParam Long categoryId, Pageable pageable){
+        return productService.findProductByCategory(categoryId, pageable);
     }
 
 }

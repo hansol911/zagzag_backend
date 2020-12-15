@@ -4,6 +4,7 @@ import com.jtrio.zagzag.model.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +15,8 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public ReviewDTO writeReview(@RequestBody ReviewCommand.CreateReview command, @RequestParam Long userId){
-        return reviewService.writeReview(command, userId);
+    public ReviewDTO createReview(@RequestBody @Valid ReviewCommand.CreateReview command, @RequestParam Long userId){
+        return reviewService.createReview(command, userId);
     }
 
     /*@GetMapping(value = "/users/{id}")

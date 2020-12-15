@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 @Data
 public class OrderDTO {
     private Integer orderPrice;
-    private Product product;
+    private Long productId;
     private LocalDateTime created;
 }

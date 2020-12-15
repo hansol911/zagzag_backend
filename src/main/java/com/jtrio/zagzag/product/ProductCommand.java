@@ -6,14 +6,19 @@ import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.User;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Data
 public class ProductCommand {
+    @NotBlank
     private String name;
+    @NotBlank
     private Integer price;
+    @NotBlank
     private String image;
+    @NotBlank
     private Long categoryId;
 
     public Product toProduct(Category category) {
