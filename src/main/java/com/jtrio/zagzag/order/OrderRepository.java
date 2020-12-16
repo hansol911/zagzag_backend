@@ -8,4 +8,5 @@ import javax.persistence.criteria.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<ProductOrder, Long> {
+    boolean existsByProductIdAndUserId(Long productId, Long userId);
 }

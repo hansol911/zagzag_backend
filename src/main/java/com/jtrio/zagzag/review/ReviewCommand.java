@@ -22,8 +22,6 @@ public class ReviewCommand {
         private byte productScore;
         @Max(5)
         private byte deliveryScore;
-        @NotBlank
-        private Long orderId;
 
         public Review toReview(User user, ProductOrder order) {
             Review review = new Review();

@@ -1,8 +1,6 @@
 package com.jtrio.zagzag.review;
 
-import com.jtrio.zagzag.exception.OrderNotFoundException;
-import com.jtrio.zagzag.exception.ProductNotFoundException;
-import com.jtrio.zagzag.exception.UserNotFoundException;
+import com.jtrio.zagzag.exception.*;
 import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.model.Review;
@@ -27,9 +25,12 @@ public class ReviewService {
     private final OrderRepository orderRepository;
 
     //리뷰쓰기
-    public ReviewDTO createReview(ReviewCommand.CreateReview command, Long userId) {
+    public ReviewDTO createReview(ReviewCommand.CreateReview command, Long userId, Long orderId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
-        ProductOrder order = orderRepository.findById(command.getOrderId()).orElseThrow(() -> new OrderNotFoundException("주문한 회원이 아님"));
+        ProductOrder order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("주문 x"));
+        if (!order.getUser().getId().equals(userId)) {
+            throw new ReviewRightException("리뷰 쓸 권한이 없음");
+        }
         Review review = reviewRepository.save(command.toReview(user, order));
         return review.toDTO();
     }

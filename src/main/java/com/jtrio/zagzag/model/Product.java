@@ -22,6 +22,7 @@ public class Product {
     private String image;
     private byte totalProductScore;
     private byte totalDeliveryScore;
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -38,8 +39,9 @@ public class Product {
         productDTO.setName(name);
         productDTO.setPrice(price);
         productDTO.setImage(image);
+        productDTO.setQuantity(quantity);
         productDTO.setCreated(created);
-        productDTO.setCategory(category);
+        productDTO.setCategoryId(category.getId());
 
         return productDTO;
     }

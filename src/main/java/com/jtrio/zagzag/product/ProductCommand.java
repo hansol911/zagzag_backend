@@ -19,6 +19,8 @@ public class ProductCommand {
     @NotBlank
     private String image;
     @NotBlank
+    private Integer quantity;
+    @NotBlank
     private Long categoryId;
 
     public Product toProduct(Category category) {
@@ -26,6 +28,7 @@ public class ProductCommand {
         product.setName(name);
         product.setPrice(price);
         product.setImage(image);
+        product.setQuantity(quantity);
         product.setCategory(category);
 
         return product;

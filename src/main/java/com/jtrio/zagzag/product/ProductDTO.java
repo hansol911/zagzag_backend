@@ -11,6 +11,7 @@ public class ProductDTO {
     private String name;
     private Integer price;
     private String image;
-    private Category category;
+    private Integer quantity;
+    private Long categoryId;
     private LocalDateTime created;
 }

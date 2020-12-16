@@ -15,8 +15,8 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public ReviewDTO createReview(@RequestBody @Valid ReviewCommand.CreateReview command, @RequestParam Long userId){
-        return reviewService.createReview(command, userId);
+    public ReviewDTO createReview(@RequestBody @Valid ReviewCommand.CreateReview command, @RequestParam Long userId, @RequestParam Long orderId){
+        return reviewService.createReview(command, userId, orderId);
     }
 
     /*@GetMapping(value = "/users/{id}")
