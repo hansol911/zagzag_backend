@@ -12,7 +12,7 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByUser(Long id);
     @Query("select avg(r.productScore) from Review r where r.product.id = :id")
-    byte avgProductScore(@Param("id") Long id);
+    byte avgProductScore(Long id);
     @Query("select avg(r.deliveryScore) from Review r where r.product.id = :id")
-    byte avgDeliveryScore(@Param("id") Long id);
+    byte avgDeliveryScore(Long id);
 }

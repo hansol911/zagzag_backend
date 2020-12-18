@@ -28,11 +28,12 @@ public class ReviewService {
     public ReviewDTO createReview(ReviewCommand.CreateReview command, Long userId, Long orderId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
         ProductOrder order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("주문 x"));
+        Product product = productRepository.findById(order.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
         if (!order.getUser().getId().equals(userId)) {
             throw new ReviewRightException("리뷰 쓸 권한이 없음");
         }
+        
         Review review = reviewRepository.save(command.toReview(user, order));
-        Product product = productRepository.findById(order.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
         product.setTotalProductScore(reviewRepository.avgProductScore(product.getId()));
         product.setTotalDeliveryScore(reviewRepository.avgDeliveryScore(product.getId()));
         return review.toDTO();
