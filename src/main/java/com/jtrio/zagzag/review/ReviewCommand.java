@@ -18,9 +18,9 @@ public class ReviewCommand {
         @NotBlank
         private String content;
         private String image;
-        @Max(5)
+        @Max(10)
         private byte productScore;
-        @Max(5)
+        @Max(10)
         private byte deliveryScore;
 
         public Review toReview(User user, ProductOrder order) {

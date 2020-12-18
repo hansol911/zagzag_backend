@@ -32,6 +32,9 @@ public class ReviewService {
             throw new ReviewRightException("리뷰 쓸 권한이 없음");
         }
         Review review = reviewRepository.save(command.toReview(user, order));
+        Product product = productRepository.findById(order.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
+        product.setTotalProductScore(product.avgTotalProductScore(review.getProductScore()));
+        product.setTotalDeliveryScore(product.avgTotalDeliveryScore(review.getDeliveryScore()));
         return review.toDTO();
     }
 
