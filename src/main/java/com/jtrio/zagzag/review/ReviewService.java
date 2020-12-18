@@ -33,8 +33,8 @@ public class ReviewService {
         }
         Review review = reviewRepository.save(command.toReview(user, order));
         Product product = productRepository.findById(order.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
-        product.setTotalProductScore(product.avgTotalProductScore(review.getProductScore()));
-        product.setTotalDeliveryScore(product.avgTotalDeliveryScore(review.getDeliveryScore()));
+        product.setTotalProductScore(reviewRepository.avgProductScore(product.getId()));
+        product.setTotalDeliveryScore(reviewRepository.avgDeliveryScore(product.getId()));
         return review.toDTO();
     }
 

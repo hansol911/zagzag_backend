@@ -7,6 +7,7 @@ import com.jtrio.zagzag.model.User;
 import lombok.Data;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
@@ -18,9 +19,9 @@ public class ReviewCommand {
         @NotBlank
         private String content;
         private String image;
-        @Max(10)
+        @Min(2) @Max(10)
         private byte productScore;
-        @Max(10)
+        @Min(2) @Max(10)
         private byte deliveryScore;
 
         public Review toReview(User user, ProductOrder order) {

@@ -45,19 +45,4 @@ public class Product {
 
         return productDTO;
     }
-
-    public byte avgTotalProductScore(byte score) {
-        byte avg = score;
-        if (totalProductScore != 0) {
-            avg = (byte)((totalProductScore + score)/2);
-        }
-        return avg;
-    }
-    public byte avgTotalDeliveryScore(byte score) {
-        byte avg = score;
-        if (totalDeliveryScore != 0) {
-            avg = (byte)((totalDeliveryScore + score)/2);
-        }
-        return avg;
-    }
 }
