@@ -1,15 +1,12 @@
 package com.jtrio.zagzag.review;
 
-import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.model.Review;
 import com.jtrio.zagzag.model.User;
 import lombok.Data;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import javax.validation.constraints.Size;
 
 @Data
 public class ReviewCommand {
@@ -19,9 +16,9 @@ public class ReviewCommand {
         @NotBlank
         private String content;
         private String image;
-        @Min(2) @Max(10)
+        @Size(min=2, max=10)
         private byte productScore;
-        @Min(2) @Max(10)
+        @Size(min=2, max=10)
         private byte deliveryScore;
 
         public Review toReview(User user, ProductOrder order) {

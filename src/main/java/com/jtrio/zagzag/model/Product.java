@@ -1,7 +1,6 @@
 package com.jtrio.zagzag.model;
 
 import com.jtrio.zagzag.product.ProductDTO;
-import com.jtrio.zagzag.user.UserDTO;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -22,7 +21,7 @@ public class Product {
     private String image;
     private byte totalProductScore;
     private byte totalDeliveryScore;
-    private Integer quantity;
+    private int quantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

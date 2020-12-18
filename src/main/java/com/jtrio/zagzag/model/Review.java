@@ -42,9 +42,6 @@ public class Review {
 
     public ReviewDTO toDTO(){
         ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setUserId(user.getId());
-        reviewDTO.setProductId(product.getId());
-        reviewDTO.setOrderId(order.getId());
         reviewDTO.setContent(content);
         reviewDTO.setImage(image);
         reviewDTO.setProductScore(productScore);

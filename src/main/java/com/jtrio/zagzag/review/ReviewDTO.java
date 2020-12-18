@@ -12,8 +12,5 @@ public class ReviewDTO {
     private byte productScore;
     private byte deliveryScore;
     private LocalDateTime created;
-    private Long userId;
-    private Long productId;
-    private Long orderId;
     //private List<User> likers;
 }

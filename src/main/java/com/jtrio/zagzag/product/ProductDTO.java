@@ -1,6 +1,5 @@
 package com.jtrio.zagzag.product;
 
-import com.jtrio.zagzag.model.Category;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,7 +10,7 @@ public class ProductDTO {
     private String name;
     private Integer price;
     private String image;
-    private Integer quantity;
+    private int quantity;
     private Long categoryId;
     private LocalDateTime created;
 }

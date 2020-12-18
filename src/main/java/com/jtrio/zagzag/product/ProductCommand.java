@@ -11,12 +11,12 @@ import javax.validation.constraints.NotBlank;
 public class ProductCommand {
     @NotBlank
     private String name;
-    @NotBlank @Min(1)
+    @Min(1)
     private Integer price;
     @NotBlank
     private String image;
     @NotBlank
-    private Integer quantity;
+    private int quantity;
     @NotBlank
     private Long categoryId;
 

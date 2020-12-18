@@ -11,7 +11,6 @@ import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Order;
 import javax.transaction.Transactional;
 
 @Service
@@ -26,7 +25,7 @@ public class OrderService {
     public OrderDTO createOrder(OrderCommand command, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
         Product product = productRepository.findById(command.getProductId()).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
-        if (product.getQuantity().equals(0)) {
+        if (product.getQuantity() == 0) {
             throw new ProductLackException("주문 가능한 수량이 없음");
         }
         product.setQuantity(product.getQuantity()-1);
