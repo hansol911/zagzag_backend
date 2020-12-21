@@ -31,17 +31,4 @@ public class Product {
     private LocalDateTime created;
     @LastModifiedDate
     private LocalDateTime updated;
-
-    public ProductDTO toDTO(){
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setId(id);
-        productDTO.setName(name);
-        productDTO.setPrice(price);
-        productDTO.setImage(image);
-        productDTO.setQuantity(quantity);
-        productDTO.setCreated(created);
-        productDTO.setCategoryId(category.getId());
-
-        return productDTO;
-    }
 }

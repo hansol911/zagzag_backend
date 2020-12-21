@@ -22,7 +22,7 @@ public class ProductService {
     public ProductDTO createProduct(ProductCommand command) {
         Category category = categoryRepository.findById(command.getCategoryId()).orElseThrow(() -> new CategoryNotFoundException("카테고리 없음"));
         Product product = productRepository.save(command.toProduct(category));
-        return product.toDTO();
+        return ProductDTO.toDTO(product);
     }
 
     //카테고리별 상품조회

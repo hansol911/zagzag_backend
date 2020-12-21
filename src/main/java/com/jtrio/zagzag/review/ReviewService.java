@@ -34,7 +34,7 @@ public class ReviewService {
         Review review = reviewRepository.save(command.toReview(user, order));
         product.setTotalProductScore(reviewRepository.avgProductScore(product.getId()));
         product.setTotalDeliveryScore(reviewRepository.avgDeliveryScore(product.getId()));
-        return review.toDTO();
+        return ReviewDTO.toDTO(review);
     }
 
     /*//좋아요한 사람 보기??

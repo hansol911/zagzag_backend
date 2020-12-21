@@ -39,15 +39,4 @@ public class Review {
     private LocalDateTime created;
     @LastModifiedDate
     private LocalDateTime updated;
-
-    public ReviewDTO toDTO(){
-        ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setContent(content);
-        reviewDTO.setImage(image);
-        reviewDTO.setProductScore(productScore);
-        reviewDTO.setDeliveryScore(deliveryScore);
-        reviewDTO.setCreated(created);
-
-        return reviewDTO;
-    }
 }

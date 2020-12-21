@@ -30,6 +30,6 @@ public class OrderService {
         }
         product.setQuantity(product.getQuantity()-1);
         ProductOrder order = orderRepository.save(command.toOrder(user, product));
-        return order.toDTO();
+        return OrderDTO.toDTO(order);
     }
 }

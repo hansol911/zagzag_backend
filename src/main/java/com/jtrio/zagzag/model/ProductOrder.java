@@ -31,13 +31,4 @@ public class ProductOrder {
     private LocalDateTime created;
     @LastModifiedDate
     private LocalDateTime updated;
-
-    public OrderDTO toDTO(){
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setOrderPrice(orderPrice);
-        orderDTO.setProductId(product.getId());
-        orderDTO.setCreated(created);
-
-        return orderDTO;
-    }
 }

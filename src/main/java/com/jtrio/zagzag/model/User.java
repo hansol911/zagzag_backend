@@ -27,14 +27,4 @@ public class User {
     private LocalDateTime created;
     @LastModifiedDate
     private LocalDateTime updated;
-
-    public UserDTO toDTO(){
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail(email);
-        userDTO.setName(name);
-        userDTO.setGender(gender);
-        userDTO.setAddr(addr);
-
-        return userDTO;
-    }
 }

@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.review;
 
+import com.jtrio.zagzag.model.Review;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,4 +14,15 @@ public class ReviewDTO {
     private byte deliveryScore;
     private LocalDateTime created;
     //private List<User> likers;
+
+    public static ReviewDTO toDTO(Review review){
+        ReviewDTO reviewDTO = new ReviewDTO();
+        reviewDTO.setContent(review.getContent());
+        reviewDTO.setImage(review.getImage());
+        reviewDTO.setProductScore(review.getProductScore());
+        reviewDTO.setDeliveryScore(review.getDeliveryScore());
+        reviewDTO.setCreated(review.getCreated());
+
+        return reviewDTO;
+    }
 }
