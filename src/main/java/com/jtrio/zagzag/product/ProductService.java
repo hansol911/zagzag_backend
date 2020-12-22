@@ -2,6 +2,7 @@ package com.jtrio.zagzag.product;
 
 import com.jtrio.zagzag.category.CategoryRepository;
 import com.jtrio.zagzag.exception.CategoryNotFoundException;
+import com.jtrio.zagzag.exception.ProductNotFoundException;
 import com.jtrio.zagzag.model.Category;
 import com.jtrio.zagzag.model.Product;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,12 @@ public class ProductService {
     public List<Product> findProductByCategory(Long categoryId, Pageable pageable){
         List<Product> products = productRepository.findByCategoryId(categoryId, pageable);
         return products;
+    }
+
+    //상품상세조회
+    public ProductDTO findById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("해당 상품이 존재하지 않음"));
+        return ProductDTO.toDTO(product);
     }
 
 }

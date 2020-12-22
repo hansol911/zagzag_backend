@@ -9,9 +9,12 @@ import com.jtrio.zagzag.model.User;
 import com.jtrio.zagzag.product.ProductRepository;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -31,5 +34,13 @@ public class OrderService {
         product.setQuantity(product.getQuantity()-1);
         ProductOrder order = orderRepository.save(command.toOrder(user, product));
         return OrderDTO.toDTO(order);
+    }
+
+    //주문조회
+    public List<ProductOrder> findByCreatedAndProduct(Long userId, Long productId, LocalDateTime created, Pageable pageable) {
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
+        productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
+        List<ProductOrder> orders = orderRepository.findByUserIdAndProductIdAndCreated(userId, productId, created, pageable);
+        return orders;
     }
 }
