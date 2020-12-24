@@ -22,7 +22,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<ProductOrder> findByCreatedAndProduct(@RequestParam Long userId, @RequestParam Long productId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime created, Pageable pageable) {
-        return orderService.findByCreatedAndProduct(userId, productId, created, pageable);
+    public List<OrderDTO> findByOrder(@RequestParam Long userId, @RequestParam Long productId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime created, Pageable pageable) {
+        return orderService.findByOrder(userId, productId, created, pageable);
     }
 }

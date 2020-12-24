@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,10 +38,15 @@ public class OrderService {
     }
 
     //주문조회
-    public List<ProductOrder> findByCreatedAndProduct(Long userId, Long productId, LocalDateTime created, Pageable pageable) {
+    public List<OrderDTO> findByOrder(Long userId, Long productId, LocalDateTime created, Pageable pageable) {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
-        List<ProductOrder> orders = orderRepository.findByUserIdAndProductIdAndCreated(userId, productId, created, pageable);
-        return orders;
+        List<ProductOrder> orders = orderRepository.findAllByUserIdAndProductIdAndCreatedAfter(userId, productId, created, pageable);
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        for(ProductOrder po : orders) {
+            OrderDTO dto = OrderDTO.toDTO(po);
+            orderDTOS.add(dto);
+        }
+        return orderDTOS;
     }
 }
