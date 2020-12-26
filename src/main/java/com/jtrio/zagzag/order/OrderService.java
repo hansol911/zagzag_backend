@@ -26,7 +26,7 @@ public class OrderService {
     private final UserRepository userRepository;
 
     //주문하기
-    public OrderDTO createOrder(OrderCommand command, Long userId) {
+    public OrderDTO.CreateOrder createOrder(OrderCommand command, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
         Product product = productRepository.findById(command.getProductId()).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
         if (product.getQuantity() == 0) {
@@ -34,17 +34,17 @@ public class OrderService {
         }
         product.setQuantity(product.getQuantity()-1);
         ProductOrder order = orderRepository.save(command.toOrder(user, product));
-        return OrderDTO.toDTO(order);
+        return OrderDTO.CreateOrder.toDTO(order);
     }
 
     //주문조회
-    public List<OrderDTO> findByOrder(Long userId, Long productId, LocalDateTime created, Pageable pageable) {
+    public List<OrderDTO.ReadOrder> findByOrder(Long userId, Long productId, LocalDateTime created, Pageable pageable) {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
         List<ProductOrder> orders = orderRepository.findAllByUserIdAndProductIdAndCreatedAfter(userId, productId, created, pageable);
-        List<OrderDTO> orderDTOS = new ArrayList<>();
+        List<OrderDTO.ReadOrder> orderDTOS = new ArrayList<>();
         for(ProductOrder po : orders) {
-            OrderDTO dto = OrderDTO.toDTO(po);
+            OrderDTO.ReadOrder dto = OrderDTO.ReadOrder.toDTO(po);
             orderDTOS.add(dto);
         }
         return orderDTOS;
