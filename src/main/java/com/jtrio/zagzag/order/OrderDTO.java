@@ -12,38 +12,18 @@ import java.time.LocalDateTime;
 
 @Data
 public class OrderDTO {
-    @Data
-    public static class CreateOrder {
-        private Integer orderPrice;
-        private Long productId;
-        private LocalDateTime created;
+    private String productName;
+    private Integer orderPrice;
+    private String image;
+    private LocalDateTime created;
 
-        public static CreateOrder toDTO(ProductOrder order){
-            CreateOrder orderDTO = new CreateOrder();
-            orderDTO.setOrderPrice(order.getOrderPrice());
-            orderDTO.setProductId(order.getProduct().getId());
-            orderDTO.setCreated(order.getCreated());
+    public static OrderDTO toDTO(ProductOrder order){
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setProductName(order.getProduct().getName());
+        orderDTO.setOrderPrice(order.getOrderPrice());
+        orderDTO.setImage(order.getProduct().getImage());
+        orderDTO.setCreated(order.getCreated());
 
-            return orderDTO;
-        }
+        return orderDTO;
     }
-
-    @Data
-    public static class ReadOrder {
-        private String productName;
-        private Integer orderPrice;
-        private String image;
-        private LocalDateTime created;
-
-        public static ReadOrder toDTO(ProductOrder order){
-            ReadOrder orderDTO = new ReadOrder();
-            orderDTO.setProductName(order.getProduct().getName());
-            orderDTO.setOrderPrice(order.getOrderPrice());
-            orderDTO.setImage(order.getProduct().getImage());
-            orderDTO.setCreated(order.getCreated());
-
-            return orderDTO;
-        }
-    }
-
 }

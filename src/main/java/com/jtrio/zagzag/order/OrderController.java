@@ -17,12 +17,12 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public OrderDTO.CreateOrder createOrder(@RequestBody @Valid OrderCommand command, @RequestParam Long userId) {
+    public OrderDTO createOrder(@RequestBody @Valid OrderCommand command, @RequestParam Long userId) {
         return orderService.createOrder(command, userId);
     }
 
     @GetMapping
-    public List<OrderDTO.ReadOrder> findByOrder(@RequestParam Long userId, @RequestParam Long productId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime created, Pageable pageable) {
+    public List<OrderDTO> findByOrder(@RequestParam Long userId, @RequestParam Long productId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime created, Pageable pageable) {
         return orderService.findByOrder(userId, productId, created, pageable);
     }
 }
