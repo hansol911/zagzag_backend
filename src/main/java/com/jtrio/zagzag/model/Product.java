@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.model;
 
+import com.jtrio.zagzag.product.ProductDTO;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,6 +19,13 @@ public class Product {
     private String name;
     private Integer price;
     private String image;
+    private byte totalProductScore;
+    private byte totalDeliveryScore;
+    private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @CreatedDate
     private LocalDateTime created;
