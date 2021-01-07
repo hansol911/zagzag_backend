@@ -5,11 +5,14 @@ import com.jtrio.zagzag.exception.CategoryNotFoundException;
 import com.jtrio.zagzag.exception.ProductNotFoundException;
 import com.jtrio.zagzag.model.Category;
 import com.jtrio.zagzag.model.Product;
+import com.jtrio.zagzag.model.QnA;
+import com.jtrio.zagzag.qna.QnaDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,9 +30,14 @@ public class ProductService {
     }
 
     //카테고리별 상품조회
-    public List<Product> findProductByCategory(Long categoryId, Pageable pageable){
+    public List<ProductDTO> findProductByCategory(Long categoryId, Pageable pageable){
         List<Product> products = productRepository.findByCategoryId(categoryId, pageable);
-        return products;
+        List<ProductDTO> productDTOS = new ArrayList<>();
+        for(Product p : products) {
+            ProductDTO dto = ProductDTO.toDTO(p);
+            productDTOS.add(dto);
+        }
+        return productDTOS;
     }
 
     //상품상세조회

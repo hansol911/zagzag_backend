@@ -25,8 +25,9 @@ public class UserController {
         return UserDTO.toDTO(user);
     }
 
-    @PutMapping(value = "/{id}")
-    public UserDTO updateUser(@RequestBody UserCommand.UpdateUser user, @PathVariable Long id) {
-        return userService.updateUser(user, id);
+    @PutMapping
+    public UserDTO updateUser(@RequestBody UserCommand.UpdateUser user, @AuthenticationPrincipal SecurityUser securityUser) {
+        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
+        return userService.updateUser(user, userId);
     }
 }

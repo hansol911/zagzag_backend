@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class Review {
     private byte deliveryScore;
 
     @ManyToMany
-    private List<User> likers;
+    private List<User> likers = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

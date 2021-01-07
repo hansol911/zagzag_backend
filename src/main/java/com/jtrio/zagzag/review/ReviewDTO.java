@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class ReviewDTO {
+    private String nickname;
     private String content;
     private String image;
     private byte productScore;
@@ -18,6 +19,9 @@ public class ReviewDTO {
 
     public static ReviewDTO toDTO(Review review){
         ReviewDTO reviewDTO = new ReviewDTO();
+        String nick = review.getUser().getEmail();
+        nick = nick.replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
+        reviewDTO.setNickname(nick);
         reviewDTO.setContent(review.getContent());
         reviewDTO.setImage(review.getImage());
         reviewDTO.setProductScore(review.getProductScore());

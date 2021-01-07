@@ -1,0 +1,178 @@
+<User>
+-user등록
+{
+    "email": "monkey@naver.com",       //아이디
+    "name": "monkey",                  //이름
+    "gender": "MALE",                  //성별
+    "addr": "seoul"                    //주소
+}
+
+-user조회(내 정보보기 users/me)
+{
+    "email": "monkey@naver.com",       //아이디
+    "name": "monkey",                  //이름
+    "gender": "MALE",                  //성별
+    "addr": "seoul"                    //주소
+}
+
+-user수정
+{
+    "email": "monkey@naver.com",       //아이디
+    "name": "monkeyyyy",               //바뀐 이름
+    "gender": "MALE",                  //성별
+    "addr": "gyeonggi"                 //바뀐 주소
+}
+
+-------------------------------------------------------------------------------------------------------
+<Product>
+-product등록
+{
+    "name": "하리보",                             //상품명
+    "price": 1000,                               //상품가격
+    "image": "jelly.png",                        //사진
+    "quantity": 20,                              //재고
+    "categoryId": 3,                             //카테고리
+    "created": "2021-01-07T15:02:23.6084434"     //상품등록날짜
+}
+
+-product조회 : 카테고리별
+[
+     {
+        "name": "곱창",                          //상품명
+        "price": 8000,                          //상품가격
+        "image": "f.jpg",                       //이미지
+        "quantity": 8,                          //재고
+        "categoryId": 3,                        //카테고리
+        "created": "2020-12-19T13:32:01.939298" //상품등록날짜
+     },
+     {
+        "name": "삼겹살",
+        "price": 10000,
+        "image": "f.jpg",
+        "quantity": 97,
+        "categoryId": 3,
+        "created": "2020-12-21T12:48:01.77153"
+     },
+    ...
+]
+
+-product조회 : 상세조회
+{
+    "name": "아이스크림",                        //상품명
+    "price": 1000,                             //상품가격
+    "image": "ice.png",                        //사진
+    "quantity": 20,                            //재고
+    "categoryId": 3,                           //카테고리
+    "created": "2021-01-07T15:00:28.000407"    //상품등록날짜
+}
+
+
+-------------------------------------------------------------------------------------------------------
+<Order>
+-order등록
+{
+    "productName": "아이스크림",                  //상품명
+    "orderPrice": 1000,                         //주문당시 가격
+    "image": "ice.png",                         //사진
+    "created": "2021-01-07T15:16:06.2126198"    //주문날짜
+}
+
+-order조회(상품&날짜)
+[
+    {
+        "productName": "삼겹살",
+        "orderPrice": 10000,
+        "image": "f.jpg",
+        "created": "2020-12-22T18:28:45.8276"
+    },
+    {
+        "productName": "삼겹살",
+        "orderPrice": 10000,
+        "image": "f.jpg",
+        "created": "2020-12-26T22:55:51.291912"
+    }
+]
+
+-order삭제(orderStatus 바뀜)
+{
+    "productName": "아이스크림",
+    "orderPrice": 1000,
+    "image": "ice.png",
+    "created": "2021-01-07T15:16:06.21262"
+}
+
+
+-------------------------------------------------------------------------------------------------------
+<Review>
+-review등록
+{
+    "nickname": "m****@naver.com",                   //id 마스킹처리
+    "content": "this is review",                     //review 내용
+    "image": "abc.png",                              //사진
+    "productScore": 6,                               //상품점수
+    "deliveryScore": 8,                              //배달점수
+    "created": "2021-01-07T13:59:12.6575896",        //review 날짜
+    "liker": 0,                                      //좋아요 숫자
+    "myLike": false                                  //로그인한 user가 좋아요했는지
+}
+
+-review조회
+[
+    {
+        "nickname": "b****@naver.com",                //id 마스킹처리
+        "content": "리뷰입니다",                        //review내용
+        "image": "사진.img",                           //사진
+        "productScore": 4,                            //상품점수
+        "deliveryScore": 3,                           //배달점수
+        "created": "2020-12-15T13:03:13.57645",       //review 날짜
+        "liker": 0,                                   //좋아요 숫자
+        "myLike": false                               //로그인한 user가 좋아요했는지
+    },
+    {
+        "nickname": "b****@naver.com",
+        "content": "리뷰5",
+        "image": "사진.img",
+        "productScore": 5,
+        "deliveryScore": 3,
+        "created": "2020-12-15T13:55:01.588369",
+        "liker": 0,
+        "myLike": false
+    },
+    ...
+]
+
+
+-------------------------------------------------------------------------------------------------------
+<QnA>
+- qna등록
+{
+    "nickname": "b****@naver.com",                //id 마스킹처리
+    "question": "문의2",                           //문의내용
+    "created": "2021-01-07T13:08:50.5670578",     //문의날짜
+    "comment": null                               //댓글
+}
+
+-qna조회
+[
+    {
+        "nickname": "b****@naver.com",            //id 마스킹처리
+        "question": "문의",                        //문의내용
+        "created": "2021-01-07T12:45:04.558081",  //문의날짜
+        "comment": []                             //댓글
+    }
+]
+
+-qna수정
+{
+    "nickname": "b****@naver.com",               //id 마스킹처리
+    "question": "modify~~~",                     //수정된 문의
+    "created": "2021-01-07T15:41:27.482764",     //문의날짜 -> 수정날짜로 바꿀예정
+    "comment": []                                //댓글
+}
+
+-qna삭제
+{
+    "nickname": "b****@naver.com",               //id 마스킹처리
+    "created": "2021-01-07T16:48:10.471142",     //문의날짜
+    "qnaStatus": "DELETED"                       //삭제됨
+}

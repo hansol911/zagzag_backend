@@ -18,24 +18,25 @@ public class QnaController {
     private final UserService userService;
 
     @PostMapping
-    public QnaDTO createQna(@RequestBody @Valid QnaCommand command, @AuthenticationPrincipal SecurityUser securityUser) {
+    public QnaDTO.CreateQna createQna(@RequestBody @Valid QnaCommand.CreateQna command, @AuthenticationPrincipal SecurityUser securityUser) {
         Long userId = userService.findByEmail(securityUser.getUsername()).getId();
         return qnaService.createQna(command, userId);
     }
 
     @GetMapping
-    public List<QnaDTO> readQna(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
+    public List<QnaDTO.CreateQna> readQna(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
         Long userId = userService.findByEmail(securityUser.getUsername()).getId();
         return qnaService.readQna(userId, productId, pageable);
     }
 
     @PutMapping(value = "/{id}")
-    public QnaDTO updateQna(@RequestBody QnaCommand command, @PathVariable Long id) {
-        return qnaService.updateQna(command, id);
+    public QnaDTO.CreateQna updateQna(@RequestBody QnaCommand.UpdateQna command, @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
+        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
+        return qnaService.updateQna(command, userId, id);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public QnaDTO deleteQna(@AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
+    @PutMapping(value = "/delete/{id}")
+    public QnaDTO.DeleteQna deleteQna(@AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
         Long userId = userService.findByEmail(securityUser.getUsername()).getId();
         return qnaService.deleteQna(userId, id);
     }

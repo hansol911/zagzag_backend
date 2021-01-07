@@ -22,7 +22,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findProductByCategory(@RequestParam Long categoryId, Pageable pageable){
+    public List<ProductDTO> findProductByCategory(@RequestParam Long categoryId, Pageable pageable){
         return productService.findProductByCategory(categoryId, pageable);
     }
 

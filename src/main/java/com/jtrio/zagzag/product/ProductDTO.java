@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class ProductDTO {
-    private Long id;
     private String name;
     private Integer price;
     private String image;
@@ -17,7 +16,6 @@ public class ProductDTO {
 
     public static ProductDTO toDTO(Product product){
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setId(product.getId());
         productDTO.setName(product.getName());
         productDTO.setPrice(product.getPrice());
         productDTO.setImage(product.getImage());
