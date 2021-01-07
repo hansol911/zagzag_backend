@@ -19,11 +19,15 @@ public class QnA {
     private Long id;
     private String question;
     private boolean secret;
+    @Enumerated(EnumType.STRING)
     private QnAStatus qnaStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
     @OneToMany
     @JoinColumn(name = "comment_id")
     private List<Comment> comment;

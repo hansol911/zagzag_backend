@@ -4,21 +4,26 @@ import com.jtrio.zagzag.exception.CheckEmailException;
 import com.jtrio.zagzag.exception.UserNotFoundException;
 import com.jtrio.zagzag.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    //모든회원조회
+    //회원조회
     public List<User> findAllUser() {
         return userRepository.findAll();
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     //회원가입
@@ -27,6 +32,7 @@ public class UserService {
             throw new CheckEmailException("ID 중복");
         }
         User user = userRepository.save(command.toUser());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return UserDTO.toDTO(user);
     }
 

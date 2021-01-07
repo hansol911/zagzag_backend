@@ -13,7 +13,8 @@ public class ReviewDTO {
     private byte productScore;
     private byte deliveryScore;
     private LocalDateTime created;
-    //private List<User> likers;
+    private Integer liker = 0;
+    private boolean myLike;
 
     public static ReviewDTO toDTO(Review review){
         ReviewDTO reviewDTO = new ReviewDTO();
@@ -22,6 +23,7 @@ public class ReviewDTO {
         reviewDTO.setProductScore(review.getProductScore());
         reviewDTO.setDeliveryScore(review.getDeliveryScore());
         reviewDTO.setCreated(review.getCreated());
+        reviewDTO.setLiker(review.getLikers().size());
 
         return reviewDTO;
     }

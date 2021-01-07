@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.order;
 
+import com.jtrio.zagzag.exception.OrderNotFoundException;
 import com.jtrio.zagzag.exception.ProductLackException;
 import com.jtrio.zagzag.exception.ProductNotFoundException;
 import com.jtrio.zagzag.exception.UserNotFoundException;
@@ -38,7 +39,7 @@ public class OrderService {
     }
 
     //주문조회
-    public List<OrderDTO> findByOrder(Long userId, Long productId, LocalDateTime created, Pageable pageable) {
+    public List<OrderDTO> readOrder(Long userId, Long productId, LocalDateTime created, Pageable pageable) {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
         List<ProductOrder> orders = orderRepository.findAllByUserIdAndProductIdAndCreatedAfter(userId, productId, created, pageable);
@@ -48,5 +49,13 @@ public class OrderService {
             orderDTOS.add(dto);
         }
         return orderDTOS;
+    }
+
+    //주문취소
+    public OrderDTO deleteOrder(Long userId, Long id) {
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
+        ProductOrder order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("해당 주문 없음"));
+        order.setOrderStatus(false);
+        return OrderDTO.toDTO(order);
     }
 }
