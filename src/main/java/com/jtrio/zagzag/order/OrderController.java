@@ -25,19 +25,19 @@ public class OrderController {
 
     @PostMapping
     public OrderDTO createOrder(@RequestBody @Valid OrderCommand command, @AuthenticationPrincipal SecurityUser securityUser) {
-        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
-        return orderService.createOrder(command, userId);
+        User user = userService.findById(securityUser.getUser().getId());
+        return orderService.createOrder(command, user);
     }
 
     @GetMapping
     public List<OrderDTO> readOrder(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime created, Pageable pageable) {
-        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
-        return orderService.readOrder(userId, productId, created, pageable);
+        User user = userService.findById(securityUser.getUser().getId());
+        return orderService.readOrder(user, productId, created, pageable);
     }
 
     @PutMapping(value = "/{id}")
     public OrderDTO deleteOrder(@AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
-        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
-        return orderService.deleteOrder(userId, id);
+        User user = userService.findById(securityUser.getUser().getId());
+        return orderService.deleteOrder(user, id);
     }
 }

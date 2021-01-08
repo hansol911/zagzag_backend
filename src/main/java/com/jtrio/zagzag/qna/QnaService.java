@@ -28,39 +28,40 @@ public class QnaService {
     private final ProductRepository productRepository;
 
     //qna등록
-    public QnaDTO.CreateQna createQna(QnaCommand.CreateQna command, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("user not found"));
+    public QnaDTO.CreateQna createQna(QnaCommand.CreateQna command, User user) {
         Product product = productRepository.findById(command.getProductId()).orElseThrow(() -> new ProductNotFoundException("product not found"));
         QnA qna = qnaRepository.save(command.toQna(user, product));
         return QnaDTO.CreateQna.toDTO(qna);
     }
 
     //qna조회
-    public List<QnaDTO.CreateQna> readQna(Long userId, Long productId, Pageable pageable) {
-        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("user not found"));
+    public List<QnaDTO.ReadQna> readQna(User user, Long productId, Pageable pageable) {
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<QnA> qnas = qnaRepository.findByProductId(productId, pageable);
-        List<QnaDTO.CreateQna> qnaDTOS = new ArrayList<>();
+        List<QnaDTO.ReadQna> qnaDTOS = new ArrayList<>();
         for(QnA qna : qnas) {
-            QnaDTO.CreateQna dto = QnaDTO.CreateQna.toDTO(qna);
+            QnaDTO.ReadQna dto = QnaDTO.ReadQna.toDTO(qna);
             qnaDTOS.add(dto);
         }
+
+        //로그인 유무에따른 변화 -> user
+
         return qnaDTOS;
     }
 
     //qna수정
-    public QnaDTO.CreateQna updateQna(QnaCommand.UpdateQna command, Long userId, Long qnaId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("user not found"));
+    public QnaDTO.ReadQna updateQna(QnaCommand.UpdateQna command, User user, Long qnaId) {
         QnA qna = qnaRepository.findById(qnaId).orElseThrow(() -> new QnaNotFoundException("qna not found"));
         qnaRepository.save(command.toQna(user, qna));
-        return QnaDTO.CreateQna.toDTO(qna);
+        return QnaDTO.ReadQna.toDTO(qna);
     }
 
     //qna삭제
-    public QnaDTO.DeleteQna deleteQna(Long userId, Long id) {
-        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("user not found"));
+    public QnaDTO.DeleteQna deleteQna(User user, Long id) {
         QnA qna = qnaRepository.findById(id).orElseThrow(() -> new QnaNotFoundException("qna not found"));
-        qna.setQnaStatus(DELETED);
+        if (qna.getUser().equals(user)) {
+            qna.setQnaStatus(DELETED);
+        }
         return QnaDTO.DeleteQna.toDTO(qna);
     }
 }

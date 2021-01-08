@@ -147,9 +147,9 @@
 - qna등록
 {
     "nickname": "b****@naver.com",                //id 마스킹처리
-    "question": "문의2",                           //문의내용
-    "created": "2021-01-07T13:08:50.5670578",     //문의날짜
-    "comment": null                               //댓글
+    "question": "0108 문의",                       //문의내용
+    "secret": true,                               //비밀여부
+    "created": "2021-01-08T13:03:02.7276401"      //문의날짜
 }
 
 -qna조회
@@ -157,6 +157,7 @@
     {
         "nickname": "b****@naver.com",            //id 마스킹처리
         "question": "문의",                        //문의내용
+        "secret": false,                          //비밀여부
         "created": "2021-01-07T12:45:04.558081",  //문의날짜
         "comment": []                             //댓글
     }
@@ -166,13 +167,12 @@
 {
     "nickname": "b****@naver.com",               //id 마스킹처리
     "question": "modify~~~",                     //수정된 문의
+    "secret": false,                             //비밀여부
     "created": "2021-01-07T15:41:27.482764",     //문의날짜 -> 수정날짜로 바꿀예정
     "comment": []                                //댓글
 }
 
 -qna삭제
 {
-    "nickname": "b****@naver.com",               //id 마스킹처리
-    "created": "2021-01-07T16:48:10.471142",     //문의날짜
     "qnaStatus": "DELETED"                       //삭제됨
 }

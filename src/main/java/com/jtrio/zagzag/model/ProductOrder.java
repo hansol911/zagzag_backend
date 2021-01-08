@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.model;
 
+import com.jtrio.zagzag.enums.OrderStatus;
 import com.jtrio.zagzag.order.OrderDTO;
 import com.jtrio.zagzag.product.ProductDTO;
 import jdk.jfr.DataAmount;
@@ -20,7 +21,8 @@ public class ProductOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer orderPrice;
-    private boolean orderStatus = true;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

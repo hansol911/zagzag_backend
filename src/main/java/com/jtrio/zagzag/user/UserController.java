@@ -15,19 +15,19 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserDTO createUser(@RequestBody @Valid UserCommand.CreateUser user) {
-        return userService.createUser(user);
+    public UserDTO createUser(@RequestBody @Valid UserCommand.CreateUser command) {
+        return userService.createUser(command);
     }
 
     @GetMapping("/me")
     public UserDTO readUser(@AuthenticationPrincipal SecurityUser securityUser){
-        User user = userService.findByEmail(securityUser.getUsername());
+        User user = userService.findById(securityUser.getUser().getId());
         return UserDTO.toDTO(user);
     }
 
     @PutMapping
-    public UserDTO updateUser(@RequestBody UserCommand.UpdateUser user, @AuthenticationPrincipal SecurityUser securityUser) {
-        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
-        return userService.updateUser(user, userId);
+    public UserDTO updateUser(@RequestBody UserCommand.UpdateUser command, @AuthenticationPrincipal SecurityUser securityUser) {
+        User user = userService.findById(securityUser.getUser().getId());
+        return userService.updateUser(command, user);
     }
 }

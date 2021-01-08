@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.qna;
 
+import com.jtrio.zagzag.model.User;
 import com.jtrio.zagzag.security.SecurityUser;
 import com.jtrio.zagzag.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,25 +20,25 @@ public class QnaController {
 
     @PostMapping
     public QnaDTO.CreateQna createQna(@RequestBody @Valid QnaCommand.CreateQna command, @AuthenticationPrincipal SecurityUser securityUser) {
-        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
-        return qnaService.createQna(command, userId);
+        User user = userService.findById(securityUser.getUser().getId());
+        return qnaService.createQna(command, user);
     }
 
     @GetMapping
-    public List<QnaDTO.CreateQna> readQna(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
-        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
-        return qnaService.readQna(userId, productId, pageable);
+    public List<QnaDTO.ReadQna> readQna(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
+        User user = userService.findById(securityUser.getUser().getId());
+        return qnaService.readQna(user, productId, pageable);
     }
 
     @PutMapping(value = "/{id}")
-    public QnaDTO.CreateQna updateQna(@RequestBody QnaCommand.UpdateQna command, @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
-        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
-        return qnaService.updateQna(command, userId, id);
+    public QnaDTO.ReadQna updateQna(@RequestBody QnaCommand.UpdateQna command, @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
+        User user = userService.findById(securityUser.getUser().getId());
+        return qnaService.updateQna(command, user, id);
     }
 
     @PutMapping(value = "/delete/{id}")
     public QnaDTO.DeleteQna deleteQna(@AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
-        Long userId = userService.findByEmail(securityUser.getUsername()).getId();
-        return qnaService.deleteQna(userId, id);
+        User user = userService.findById(securityUser.getUser().getId());
+        return qnaService.deleteQna(user, id);
     }
 }

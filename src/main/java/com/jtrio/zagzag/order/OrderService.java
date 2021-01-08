@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jtrio.zagzag.enums.OrderStatus.CANCELED;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -27,11 +29,10 @@ public class OrderService {
     private final UserRepository userRepository;
 
     //주문하기
-    public OrderDTO createOrder(OrderCommand command, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
+    public OrderDTO createOrder(OrderCommand command, User user) {
         Product product = productRepository.findById(command.getProductId()).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
         if (product.getQuantity() == 0) {
-            throw new ProductLackException("주문 가능한 수량이 없음");
+            throw new ProductLackException("lack of quantity");
         }
         product.setQuantity(product.getQuantity()-1);
         ProductOrder order = orderRepository.save(command.toOrder(user, product));
@@ -39,10 +40,9 @@ public class OrderService {
     }
 
     //주문조회
-    public List<OrderDTO> readOrder(Long userId, Long productId, LocalDateTime created, Pageable pageable) {
-        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
-        productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
-        List<ProductOrder> orders = orderRepository.findAllByUserIdAndProductIdAndCreatedAfter(userId, productId, created, pageable);
+    public List<OrderDTO> readOrder(User user, Long productId, LocalDateTime created, Pageable pageable) {
+        productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
+        List<ProductOrder> orders = orderRepository.findAllByUserIdAndProductIdAndCreatedAfter(user.getId(), productId, created, pageable);
         List<OrderDTO> orderDTOS = new ArrayList<>();
         for(ProductOrder po : orders) {
             OrderDTO dto = OrderDTO.toDTO(po);
@@ -52,10 +52,11 @@ public class OrderService {
     }
 
     //주문취소
-    public OrderDTO deleteOrder(Long userId, Long id) {
-        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
-        ProductOrder order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("해당 주문 없음"));
-        order.setOrderStatus(false);
+    public OrderDTO deleteOrder(User user, Long id) {
+        ProductOrder order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("order not found"));
+        if (order.getUser().equals(user)) {
+            order.setOrderStatus(CANCELED);
+        }
         return OrderDTO.toDTO(order);
     }
 }

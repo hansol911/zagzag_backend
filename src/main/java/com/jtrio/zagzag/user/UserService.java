@@ -22,14 +22,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("user not found"));
     }
 
     //회원가입
     public UserDTO createUser(UserCommand.CreateUser command) {
         if (userRepository.existsByEmail(command.getEmail())) {
-            throw new CheckEmailException("ID 중복");
+            throw new CheckEmailException("ID duplication");
         }
         User user = userRepository.save(command.toUser());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -37,8 +37,7 @@ public class UserService {
     }
 
     //회원정보수정
-    public UserDTO updateUser(UserCommand.UpdateUser command, Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("회원이 아님"));
+    public UserDTO updateUser(UserCommand.UpdateUser command, User user) {
         userRepository.save(command.toUser(user));
         return UserDTO.toDTO(user);
     }

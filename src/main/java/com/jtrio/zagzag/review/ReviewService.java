@@ -24,11 +24,10 @@ public class ReviewService {
     private final OrderRepository orderRepository;
 
     //리뷰쓰기
-    public ReviewDTO createReview(ReviewCommand.CreateReview command, Long userId, Long orderId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("user not found"));
+    public ReviewDTO createReview(ReviewCommand.CreateReview command, User user, Long orderId) {
         ProductOrder order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("order not found"));
         Product product = productRepository.findById(order.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("product not found"));
-        if (!order.getUser().getId().equals(userId)) {
+        if (!order.getUser().equals(user)) {
             throw new ReviewAuthorityException("리뷰 쓸 권한이 없음");
         }
 
@@ -39,7 +38,7 @@ public class ReviewService {
     }
 
     //리뷰조회
-    public List<ReviewDTO> readReview(Long userId, Long productId, Pageable pageable) {
+    public List<ReviewDTO> readReview(User user, Long productId, Pageable pageable) {
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<Review> reviews = reviewRepository.findByProductId(productId, pageable);
         List<ReviewDTO> reviewDTOS = new ArrayList<>();
@@ -47,16 +46,14 @@ public class ReviewService {
             ReviewDTO dto = ReviewDTO.toDTO(r);
             reviewDTOS.add(dto);
         }
-        //내가 쓴 리뷰면 true 아니면 false
-        if (userId != null) {
+
+        //로그인유무에 따른 변화 user
+        if (user != null) {
             for (int i=0 ; i<reviews.size() ; i++) {
-                for (int j=0; j<reviews.get(i).getLikers().size(); j++){
-                    if (reviews.get(i).getLikers().get(j).getId().equals(userId)) {
-                        reviewDTOS.get(i).setMyLike(true);
-                    }
+                if (reviews.get(i).getLikers().contains(user)) {
+                    reviewDTOS.get(i).setMyLike(true);
                 }
             }
-
         }
         return reviewDTOS;
     }
