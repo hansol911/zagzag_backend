@@ -1,9 +1,6 @@
 package com.jtrio.zagzag.model;
 
 import com.jtrio.zagzag.enums.OrderStatus;
-import com.jtrio.zagzag.order.OrderDTO;
-import com.jtrio.zagzag.product.ProductDTO;
-import jdk.jfr.DataAmount;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

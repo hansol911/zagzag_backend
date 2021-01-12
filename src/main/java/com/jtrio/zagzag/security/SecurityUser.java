@@ -1,7 +1,6 @@
 package com.jtrio.zagzag.security;
 
 import com.jtrio.zagzag.model.User;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +11,6 @@ import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Data
 public class SecurityUser implements UserDetails {
     private static final String ROLE_PREFIX = "ROLE_";
     private final User user;
@@ -32,6 +30,10 @@ public class SecurityUser implements UserDetails {
     @Override
     public String getUsername() {
         return user.getEmail();
+    }
+
+    public Long getUserId() {
+        return user.getId();
     }
 
     @Override

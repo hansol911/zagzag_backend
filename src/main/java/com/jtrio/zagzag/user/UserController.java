@@ -1,6 +1,5 @@
 package com.jtrio.zagzag.user;
 
-import com.jtrio.zagzag.model.User;
 import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,14 +19,12 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public UserDTO readUser(@AuthenticationPrincipal SecurityUser securityUser){
-        User user = userService.findById(securityUser.getUser().getId());
-        return UserDTO.toDTO(user);
+    public UserDTO readUser(@AuthenticationPrincipal SecurityUser securityUser) {
+        return userService.findById(securityUser.getUserId());
     }
 
     @PutMapping
     public UserDTO updateUser(@RequestBody UserCommand.UpdateUser command, @AuthenticationPrincipal SecurityUser securityUser) {
-        User user = userService.findById(securityUser.getUser().getId());
-        return userService.updateUser(command, user);
+        return userService.updateUser(command, securityUser.getUserId());
     }
 }

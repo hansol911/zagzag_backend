@@ -112,7 +112,7 @@
     "productScore": 6,                               //상품점수
     "deliveryScore": 8,                              //배달점수
     "created": "2021-01-07T13:59:12.6575896",        //review 날짜
-    "liker": 0,                                      //좋아요 숫자
+    "likers": 0,                                     //좋아요 숫자
     "myLike": false                                  //로그인한 user가 좋아요했는지
 }
 
@@ -125,8 +125,8 @@
         "productScore": 4,                            //상품점수
         "deliveryScore": 3,                           //배달점수
         "created": "2020-12-15T13:03:13.57645",       //review 날짜
-        "liker": 0,                                   //좋아요 숫자
-        "myLike": false                               //로그인한 user가 좋아요했는지
+        "likers": 1,                                  //좋아요 숫자
+        "myLike": true                                //로그인한 user가 좋아요했는지
     },
     {
         "nickname": "b****@naver.com",
@@ -135,7 +135,7 @@
         "productScore": 5,
         "deliveryScore": 3,
         "created": "2020-12-15T13:55:01.588369",
-        "liker": 0,
+        "likers": 0,
         "myLike": false
     },
     ...

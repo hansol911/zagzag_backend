@@ -2,8 +2,8 @@ package com.jtrio.zagzag.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class UserNotFoundException extends ApiException{
-    public UserNotFoundException (String msg){
+public class UserNotFoundException extends ApiException {
+    public UserNotFoundException(String msg) {
         super(msg);
     }
 

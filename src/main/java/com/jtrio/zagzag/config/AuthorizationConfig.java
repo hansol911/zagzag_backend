@@ -34,9 +34,9 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(tokenStore())
-                 .accessTokenConverter(jwtAccessTokenConverter())
-                 .userDetailsService(customUserDetailsService)
-                 .authenticationManager(authenticationManager);
+                .accessTokenConverter(jwtAccessTokenConverter())
+                .userDetailsService(customUserDetailsService)
+                .authenticationManager(authenticationManager);
     }
 
     public TokenStore tokenStore() {

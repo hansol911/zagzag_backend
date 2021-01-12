@@ -1,9 +1,9 @@
 package com.jtrio.zagzag.order;
 
+import com.jtrio.zagzag.exception.UserAuthorityException;
 import com.jtrio.zagzag.exception.OrderNotFoundException;
 import com.jtrio.zagzag.exception.ProductLackException;
 import com.jtrio.zagzag.exception.ProductNotFoundException;
-import com.jtrio.zagzag.exception.UserNotFoundException;
 import com.jtrio.zagzag.model.Product;
 import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.model.User;
@@ -29,22 +29,24 @@ public class OrderService {
     private final UserRepository userRepository;
 
     //주문하기
-    public OrderDTO createOrder(OrderCommand command, User user) {
+    public OrderDTO createOrder(OrderCommand command, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
         Product product = productRepository.findById(command.getProductId()).orElseThrow(() -> new ProductNotFoundException("상품이 없음"));
         if (product.getQuantity() == 0) {
             throw new ProductLackException("lack of quantity");
         }
-        product.setQuantity(product.getQuantity()-1);
+        product.setQuantity(product.getQuantity() - 1);
         ProductOrder order = orderRepository.save(command.toOrder(user, product));
         return OrderDTO.toDTO(order);
     }
 
     //주문조회
-    public List<OrderDTO> readOrder(User user, Long productId, LocalDateTime created, Pageable pageable) {
+    public List<OrderDTO> readOrder(Long userId, Long productId, LocalDateTime created, Pageable pageable) {
+        User user = userRepository.findById(userId).orElseThrow();
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<ProductOrder> orders = orderRepository.findAllByUserIdAndProductIdAndCreatedAfter(user.getId(), productId, created, pageable);
         List<OrderDTO> orderDTOS = new ArrayList<>();
-        for(ProductOrder po : orders) {
+        for (ProductOrder po : orders) {
             OrderDTO dto = OrderDTO.toDTO(po);
             orderDTOS.add(dto);
         }
@@ -52,10 +54,14 @@ public class OrderService {
     }
 
     //주문취소
-    public OrderDTO deleteOrder(User user, Long id) {
+    public OrderDTO deleteOrder(Long userId, Long id) {
+        User user = userRepository.findById(userId).orElseThrow();
         ProductOrder order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("order not found"));
         if (order.getUser().equals(user)) {
             order.setOrderStatus(CANCELED);
+            orderRepository.save(order);
+        } else {
+            throw new UserAuthorityException("cannot cancel order");
         }
         return OrderDTO.toDTO(order);
     }

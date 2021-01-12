@@ -14,7 +14,7 @@ public class ProductDTO {
     private Long categoryId;
     private LocalDateTime created;
 
-    public static ProductDTO toDTO(Product product){
+    public static ProductDTO toDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName(product.getName());
         productDTO.setPrice(product.getPrice());
@@ -22,8 +22,6 @@ public class ProductDTO {
         productDTO.setQuantity(product.getQuantity());
         productDTO.setCreated(product.getCreated());
         productDTO.setCategoryId(product.getCategory().getId());
-
         return productDTO;
     }
-
 }

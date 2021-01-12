@@ -3,7 +3,7 @@ package com.jtrio.zagzag.exception;
 import org.springframework.http.HttpStatus;
 
 public class ProductNotFoundException extends ApiException {
-    public ProductNotFoundException (String msg){
+    public ProductNotFoundException(String msg) {
         super(msg);
     }
 

@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @Transactional
@@ -18,12 +17,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     //회원조회
-    public List<User> findAllUser() {
-        return userRepository.findAll();
-    }
-
-    public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("user not found"));
+    public UserDTO findById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("user not found"));
+        return UserDTO.toDTO(user);
     }
 
     //회원가입
@@ -37,7 +33,8 @@ public class UserService {
     }
 
     //회원정보수정
-    public UserDTO updateUser(UserCommand.UpdateUser command, User user) {
+    public UserDTO updateUser(UserCommand.UpdateUser command, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
         userRepository.save(command.toUser(user));
         return UserDTO.toDTO(user);
     }

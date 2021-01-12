@@ -8,6 +8,8 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
+import static com.jtrio.zagzag.enums.QnAStatus.NORMAL;
+
 @Data
 public class QnaCommand {
     @Data
@@ -17,8 +19,6 @@ public class QnaCommand {
         @NotBlank
         private boolean secret;
         @NotBlank
-        private QnAStatus qnaStatus;
-        @NotBlank
         private Long productId;
 
         public QnA toQna(User user, Product product) {
@@ -27,11 +27,11 @@ public class QnaCommand {
             qna.setProduct(product);
             qna.setQuestion(question);
             qna.setSecret(secret);
-            qna.setQnaStatus(qnaStatus);
-
+            qna.setQnaStatus(NORMAL);
             return qna;
         }
     }
+
     @Data
     public static class UpdateQna {
         @NotBlank
@@ -49,7 +49,6 @@ public class QnaCommand {
             qna.setQuestion(question);
             qna.setSecret(secret);
             qna.setQnaStatus(qnaStatus);
-
             return qna;
         }
     }

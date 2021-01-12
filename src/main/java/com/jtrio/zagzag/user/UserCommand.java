@@ -4,7 +4,6 @@ import com.jtrio.zagzag.enums.Gender;
 import com.jtrio.zagzag.model.User;
 import com.jtrio.zagzag.security.UserRole;
 import lombok.Data;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -34,7 +33,6 @@ public class UserCommand {
             user.setAddr(addr);
             user.setGender(gender);
             user.setRole(role);
-
             return user;
         }
     }
@@ -47,7 +45,6 @@ public class UserCommand {
         public User toUser(User user) {
             user.setName(name);
             user.setAddr(addr);
-
             return user;
         }
     }

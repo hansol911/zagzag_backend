@@ -27,61 +27,6 @@ public class ProductCommand {
         product.setImage(image);
         product.setQuantity(quantity);
         product.setCategory(category);
-
         return product;
     }
-
-    /*
-    @Data
-    public static class CreateProduct {
-        private String name;
-        private Integer price;
-        private String image;
-        private Category category;
-
-        public Product toProduct() {
-            Product product = new Product();
-            product.setName(name);
-            product.setPrice(price);
-            product.setImage(image);
-            product.setCategory(category);
-
-            return product;
-        }
-    }
-
-    @Data
-    public static class ReadProduct {
-        private String name;
-        private Integer price;
-        private String image;
-        private Category category;
-
-        public Product toProduct(Product product) {
-            product.setName(name);
-            product.setPrice(price);
-            product.setImage(image);
-            product.setCategory(category);
-
-            return product;
-        }
-    }
-
-    @Data
-    public static class UpdateProduct {
-        private String name;
-        private Integer price;
-        private String image;
-        private Category category;
-
-        public Product toProduct(Product product) {
-            product.setName(name);
-            product.setPrice(price);
-            product.setImage(image);
-            product.setCategory(category);
-
-            return product;
-        }
-    }*/
-
 }

@@ -3,7 +3,7 @@ package com.jtrio.zagzag.exception;
 import org.springframework.http.HttpStatus;
 
 public class QnaNotFoundException extends ApiException {
-    public QnaNotFoundException (String msg){
+    public QnaNotFoundException(String msg) {
         super(msg);
     }
 

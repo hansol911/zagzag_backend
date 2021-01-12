@@ -4,7 +4,6 @@ import com.jtrio.zagzag.model.Review;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class ReviewDTO {
@@ -14,10 +13,10 @@ public class ReviewDTO {
     private byte productScore;
     private byte deliveryScore;
     private LocalDateTime created;
-    private Integer liker = 0;
+    private int likers;
     private boolean myLike;
 
-    public static ReviewDTO toDTO(Review review){
+    public static ReviewDTO toDTO(Review review) {
         ReviewDTO reviewDTO = new ReviewDTO();
         String nick = review.getUser().getEmail();
         nick = nick.replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
@@ -27,8 +26,6 @@ public class ReviewDTO {
         reviewDTO.setProductScore(review.getProductScore());
         reviewDTO.setDeliveryScore(review.getDeliveryScore());
         reviewDTO.setCreated(review.getCreated());
-        reviewDTO.setLiker(review.getLikers().size());
-
         return reviewDTO;
     }
 }

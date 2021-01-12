@@ -1,6 +1,5 @@
 package com.jtrio.zagzag.security;
 
-import com.jtrio.zagzag.exception.UserNotFoundException;
 import com.jtrio.zagzag.model.User;
 import com.jtrio.zagzag.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("user not found");
         }
         return new SecurityUser(user);
