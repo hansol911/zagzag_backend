@@ -46,10 +46,9 @@ public class OrderService {
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<ProductOrder> orders = orderRepository.findAllByUserIdAndProductIdAndCreatedAfter(user.getId(), productId, created, pageable);
         List<OrderDTO> orderDTOS = new ArrayList<>();
-        for (ProductOrder po : orders) {
+        orders.forEach(po -> {
             OrderDTO dto = OrderDTO.toDTO(po);
-            orderDTOS.add(dto);
-        }
+            orderDTOS.add(dto);});
         return orderDTOS;
     }
 
@@ -57,12 +56,11 @@ public class OrderService {
     public OrderDTO deleteOrder(Long userId, Long id) {
         User user = userRepository.findById(userId).orElseThrow();
         ProductOrder order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("order not found"));
-        if (order.getUser().equals(user)) {
-            order.setOrderStatus(CANCELED);
-            orderRepository.save(order);
-        } else {
+        if (!order.getUser().equals(user)) {
             throw new UserAuthorityException("cannot cancel order");
         }
+        order.setOrderStatus(CANCELED);
+        orderRepository.save(order);
         return OrderDTO.toDTO(order);
     }
 }

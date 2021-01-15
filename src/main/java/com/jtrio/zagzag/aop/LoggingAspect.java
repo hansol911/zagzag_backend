@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class LoggingAspect {
-    @Before("execution(* com.jtrio.zagzag..*Controller.*(..))")
+    @Before("execution(* com.jtrio.zagzag..*Controller.*(..)) && !@annotation(com.jtrio.zagzag.aop.NoLogging)")
     public void logging(JoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

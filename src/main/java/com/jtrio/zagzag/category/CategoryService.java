@@ -1,7 +1,11 @@
 package com.jtrio.zagzag.category;
 
 import com.jtrio.zagzag.model.Category;
+import com.jtrio.zagzag.model.Product;
+import com.jtrio.zagzag.product.ProductDTO;
+import com.jtrio.zagzag.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,19 +17,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
-    public CategoryDTO createCategory(CategoryCommand command) {
+    public CategoryDTO.CreateCategory createCategory(CategoryCommand command) {
         Category category = categoryRepository.save(command.toCategory());
-        return CategoryDTO.toDTO(category);
+        return CategoryDTO.CreateCategory.toDTO(category);
     }
 
-    public List<CategoryDTO> readCategory() {
+    public List<CategoryDTO.ReadCategory> readCategory(Pageable pageable) {
         List<Category> categories = categoryRepository.findAll();
-        List<CategoryDTO> categoryDTOS = new ArrayList<>();
-        for (Category c : categories) {
-            CategoryDTO dto = CategoryDTO.toDTO(c);
-            categoryDTOS.add(dto);
-        }
+        List<CategoryDTO.ReadCategory> categoryDTOS = new ArrayList<>();
+        categories.forEach(c -> {
+            List<Product> products = productRepository.findByCategoryId(c.getId(), pageable);
+            CategoryDTO.ReadCategory dto = CategoryDTO.ReadCategory.toDTO(c, products);
+            categoryDTOS.add(dto);});
         return categoryDTOS;
     }
 }

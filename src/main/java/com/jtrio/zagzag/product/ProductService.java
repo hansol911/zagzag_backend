@@ -31,10 +31,8 @@ public class ProductService {
     public List<ProductDTO> findProductByCategory(Long categoryId, Pageable pageable) {
         List<Product> products = productRepository.findByCategoryId(categoryId, pageable);
         List<ProductDTO> productDTOS = new ArrayList<>();
-        for (Product p : products) {
-            ProductDTO dto = ProductDTO.toDTO(p);
-            productDTOS.add(dto);
-        }
+        products.forEach(p -> {ProductDTO dto = ProductDTO.toDTO(p);
+            productDTOS.add(dto);});
         return productDTOS;
     }
 

@@ -44,22 +44,21 @@ public class ReviewService {
 
     //리뷰조회
     public List<ReviewDTO> readReview(Long userId, Long productId, Pageable pageable) {
-        User user = userRepository.findById(userId).orElseThrow();
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<Review> reviews = reviewRepository.findByProductId(productId, pageable);
         List<ReviewDTO> reviewDTOS = new ArrayList<>();
-        for (Review r : reviews) {
+        reviews.forEach(r -> {
             ReviewDTO dto = ReviewDTO.toDTO(r);
             dto.setLikers(likersRepository.countLikers(r.getId()));
-            reviewDTOS.add(dto);
-        }
+            reviewDTOS.add(dto);});
 
-        //로그인유무에 따른 변화 user
-        Likers likers = likersRepository.findByUserId(userId);
-        if (user != null) {
+        List<Likers> likers = likersRepository.findByUserId(userId);
+        if (userId != null) {
             for (int i = 0; i < reviews.size(); i++) {
-                if (reviews.get(i).getUser().equals(likers.getUser())) {
-                    reviewDTOS.get(i).setMyLike(true);
+                for (int j = 0; j < likers.size(); j++){
+                    if (reviews.get(i).getUser().equals(likers.get(j).getUser())) {
+                        reviewDTOS.get(i).setMyLike(true);
+                    }
                 }
             }
         }
@@ -70,7 +69,11 @@ public class ReviewService {
     public ReviewDTO updateReview(ReviewCommand command, Long userId, Long orderId) {
         User user = userRepository.findById(userId).orElseThrow();
         ProductOrder order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("order not found"));
-        Review review = reviewRepository.save(command.toReview(user, order));
+        Review review = reviewRepository.findByOrderId(orderId);
+        if (!review.getUser().equals(user)){
+            throw new UserAuthorityException("cannot update review");
+        }
+        reviewRepository.save(command.toReview(user, order));
         return ReviewDTO.toDTO(review);
     }
 
@@ -78,11 +81,10 @@ public class ReviewService {
     public ReviewDTO deleteReview(Long userId, Long id) {
         User user = userRepository.findById(userId).orElseThrow();
         Review review = reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException("review not found"));
-        if (review.getUser().equals(user)) {
-            reviewRepository.delete(review);
-        } else {
-            throw new UserAuthorityException("cannot delete qna");
+        if (!review.getUser().equals(user)) {
+            throw new UserAuthorityException("cannot delete review");
         }
+        reviewRepository.delete(review);
         return ReviewDTO.toDTO(review);
     }
 }

@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.review;
 
+import com.jtrio.zagzag.aop.NoLogging;
 import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +21,10 @@ public class ReviewController {
         return reviewService.createReview(command, securityUser.getUserId(), orderId);
     }
 
+    @NoLogging
     @GetMapping
     public List<ReviewDTO> readReview(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
-        return reviewService.readReview(securityUser.getUserId(), productId, pageable);
+        return reviewService.readReview(securityUser != null ? securityUser.getUserId() : null, productId, pageable);
     }
 
     @PutMapping(value = "/{id}")

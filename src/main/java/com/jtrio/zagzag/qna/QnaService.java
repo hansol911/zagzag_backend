@@ -44,13 +44,15 @@ public class QnaService {
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<QnA> qnas = qnaRepository.findByProductId(productId, pageable);
         List<QnaDTO.ReadQna> qnaDTOS = new ArrayList<>();
-        for (QnA qna : qnas) {
-            List<Comment> comments = commentRepository.findByQnAId(qna.getId());
+        qnas.forEach(qna -> {
+            List<Comment> comments = commentRepository.findByQnAIdOrderByCreated(qna.getId());
             QnaDTO.ReadQna dto = QnaDTO.ReadQna.toDTO(qna, comments);
             qnaDTOS.add(dto);
-        }
+        });
 
-        //로그인 유무에따른 변화 -> user
+        if (user != null) {
+            ///
+        }
         return qnaDTOS;
     }
 
@@ -58,7 +60,10 @@ public class QnaService {
     public QnaDTO.ReadQna updateQna(QnaCommand.UpdateQna command, Long userId, Long qnaId) {
         User user = userRepository.findById(userId).orElseThrow();
         QnA qna = qnaRepository.findById(qnaId).orElseThrow(() -> new QnaNotFoundException("qna not found"));
-        List<Comment> comments = commentRepository.findByQnAId(qna.getId());
+        List<Comment> comments = commentRepository.findByQnAIdOrderByCreated(qna.getId());
+        if (!qna.getUser().equals(user)) {
+            throw new UserAuthorityException("cannot update qna");
+        }
         qnaRepository.save(command.toQna(user, qna));
         return QnaDTO.ReadQna.toDTO(qna, comments);
     }
@@ -67,12 +72,11 @@ public class QnaService {
     public QnaDTO.DeleteQna deleteQna(Long userId, Long id) {
         User user = userRepository.findById(userId).orElseThrow();
         QnA qna = qnaRepository.findById(id).orElseThrow(() -> new QnaNotFoundException("qna not found"));
-        if (qna.getUser().equals(user)) {
-            qna.setQnaStatus(DELETED);
-            qnaRepository.save(qna);
-        } else {
+        if (!qna.getUser().equals(user)) {
             throw new UserAuthorityException("cannot delete qna");
         }
+        qna.setQnaStatus(DELETED);
+        qnaRepository.save(qna);
         return QnaDTO.DeleteQna.toDTO(qna);
     }
 }

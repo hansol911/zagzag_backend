@@ -14,6 +14,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findByProductId(Long productId, Pageable pageable);
 
+    Review findByOrderId(Long orderId);
+
     @Query("select avg(r.productScore) from Review r where r.product.id = :id")
     byte avgProductScore(Long id);
 

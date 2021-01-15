@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.qna;
 
+import com.jtrio.zagzag.aop.NoLogging;
 import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +21,10 @@ public class QnaController {
         return qnaService.createQna(command, securityUser.getUserId());
     }
 
+    @NoLogging
     @GetMapping
     public List<QnaDTO.ReadQna> readQna(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
-        return qnaService.readQna(securityUser.getUserId(), productId, pageable);
+        return qnaService.readQna(securityUser != null ? securityUser.getUserId() : null, productId, pageable);
     }
 
     @PutMapping(value = "/{id}")
@@ -30,7 +32,7 @@ public class QnaController {
         return qnaService.updateQna(command, securityUser.getUserId(), id);
     }
 
-    @PutMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public QnaDTO.DeleteQna deleteQna(@AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
         return qnaService.deleteQna(securityUser.getUserId(), id);
     }
