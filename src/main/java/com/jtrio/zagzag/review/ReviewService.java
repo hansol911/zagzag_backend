@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -46,20 +48,16 @@ public class ReviewService {
     public List<ReviewDTO> readReview(Long userId, Long productId, Pageable pageable) {
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<Review> reviews = reviewRepository.findByProductId(productId, pageable);
-        List<ReviewDTO> reviewDTOS = new ArrayList<>();
-        reviews.forEach(r -> {
-            ReviewDTO dto = ReviewDTO.toDTO(r);
-            dto.setLikers(likersRepository.countLikers(r.getId()));
-            reviewDTOS.add(dto);});
-
+        List<ReviewDTO> reviewDTOS = reviews.stream().map(ReviewDTO::toDTO).collect(Collectors.toList());
         List<Likers> likers = likersRepository.findByUserId(userId);
+        List<Long> reviewId = new ArrayList<>();
+        for (int j = 0; j < likers.size(); j++) {
+            reviewId.add(likers.get(j).getId());
+        }
         if (userId != null) {
             for (int i = 0; i < reviews.size(); i++) {
-                for (int j = 0; j < likers.size(); j++){
-                    if (reviews.get(i).getUser().equals(likers.get(j).getUser())) {
-                        reviewDTOS.get(i).setMyLike(true);
-                    }
-                }
+                if (reviewId.contains(reviews.get(i).getId()))
+                    reviewDTOS.get(i).setMyLike(true);
             }
         }
         return reviewDTOS;
@@ -70,7 +68,7 @@ public class ReviewService {
         User user = userRepository.findById(userId).orElseThrow();
         ProductOrder order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("order not found"));
         Review review = reviewRepository.findByOrderId(orderId);
-        if (!review.getUser().equals(user)){
+        if (!review.getUser().equals(user)) {
             throw new UserAuthorityException("cannot update review");
         }
         reviewRepository.save(command.toReview(user, order));

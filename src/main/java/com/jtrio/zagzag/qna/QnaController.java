@@ -1,6 +1,5 @@
 package com.jtrio.zagzag.qna;
 
-import com.jtrio.zagzag.aop.NoLogging;
 import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,6 @@ public class QnaController {
         return qnaService.createQna(command, securityUser.getUserId());
     }
 
-    @NoLogging
     @GetMapping
     public List<QnaDTO.ReadQna> readQna(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
         return qnaService.readQna(securityUser != null ? securityUser.getUserId() : null, productId, pageable);

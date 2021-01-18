@@ -43,7 +43,7 @@ public class QnaService {
         User user = userRepository.findById(userId).orElseThrow();
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<QnA> qnas = qnaRepository.findByProductId(productId, pageable);
-        List<QnaDTO.ReadQna> qnaDTOS = new ArrayList<>();
+        List<QnaDTO.ReadQna> qnaDTOS = new ArrayList<>(); //qnas.stream().map(q -> QnaDTO.ReadQna.toDTO(qnas, comments)).collect(Collectors.toList());
         qnas.forEach(qna -> {
             List<Comment> comments = commentRepository.findByQnAIdOrderByCreated(qna.getId());
             QnaDTO.ReadQna dto = QnaDTO.ReadQna.toDTO(qna, comments);

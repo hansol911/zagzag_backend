@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,10 +30,7 @@ public class ProductService {
     //카테고리별 상품조회
     public List<ProductDTO> findProductByCategory(Long categoryId, Pageable pageable) {
         List<Product> products = productRepository.findByCategoryId(categoryId, pageable);
-        List<ProductDTO> productDTOS = new ArrayList<>();
-        products.forEach(p -> {ProductDTO dto = ProductDTO.toDTO(p);
-            productDTOS.add(dto);});
-        return productDTOS;
+        return products.stream().map(ProductDTO::toDTO).collect(Collectors.toList());
     }
 
     //상품상세조회

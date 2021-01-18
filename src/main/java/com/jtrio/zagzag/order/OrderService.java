@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.jtrio.zagzag.enums.OrderStatus.CANCELED;
 
@@ -45,11 +45,7 @@ public class OrderService {
         User user = userRepository.findById(userId).orElseThrow();
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<ProductOrder> orders = orderRepository.findAllByUserIdAndProductIdAndCreatedAfter(user.getId(), productId, created, pageable);
-        List<OrderDTO> orderDTOS = new ArrayList<>();
-        orders.forEach(po -> {
-            OrderDTO dto = OrderDTO.toDTO(po);
-            orderDTOS.add(dto);});
-        return orderDTOS;
+        return orders.stream().map(OrderDTO::toDTO).collect(Collectors.toList());
     }
 
     //주문취소

@@ -16,10 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class LoggingAspect {
-    @Before("execution(* com.jtrio.zagzag..*Controller.*(..)) && !@annotation(com.jtrio.zagzag.aop.NoLogging)")
+    @Before("execution(* com.jtrio.zagzag..*Controller.*(..))")
     public void logging(JoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("userId: {}, request: {}, params: {}", securityUser.getUserId(), request.getRequestURL(), joinPoint.getArgs());
+        Object securityUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId;
+        if (securityUser instanceof SecurityUser) {
+            userId = ((SecurityUser) securityUser).getUserId();
+        } else {
+            userId = -1L;
+        }
+        log.info("userId: {}, request: {}, params: {}", userId, request.getRequestURL(), joinPoint.getArgs());
     }
 }

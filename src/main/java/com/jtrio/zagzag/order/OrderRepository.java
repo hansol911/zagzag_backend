@@ -10,7 +10,5 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<ProductOrder, Long> {
-    boolean existsByProductIdAndUserId(Long productId, Long userId);
-
     List<ProductOrder> findAllByUserIdAndProductIdAndCreatedAfter(Long userId, Long productId, LocalDateTime created, Pageable pageable);
 }

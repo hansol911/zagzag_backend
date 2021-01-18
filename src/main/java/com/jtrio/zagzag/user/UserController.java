@@ -1,6 +1,5 @@
 package com.jtrio.zagzag.user;
 
-import com.jtrio.zagzag.aop.NoLogging;
 import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,7 +13,6 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
 
-    @NoLogging
     @PostMapping
     public UserDTO createUser(@RequestBody @Valid UserCommand.CreateUser command) {
         return userService.createUser(command);

@@ -12,5 +12,7 @@ public interface LikersRepository extends JpaRepository<Likers, Long> {
 
     List<Likers> findByUserId(Long userId);
 
+    List<Likers> findByReviewId(Long reviewId);
+
     boolean existsByUserIdAndAndReviewId(Long userId, Long reviewId);
 }
