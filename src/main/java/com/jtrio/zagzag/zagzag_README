@@ -160,6 +160,13 @@
         "secret": false,                          //비밀여부
         "created": "2021-01-07T12:45:04.558081",  //문의날짜
         "comment": []                             //댓글
+    },
+    {
+        "nickname": "b****@naver.com",
+        "question": "비밀글입니다.",                 //비밀글
+        "secret": true,
+        "created": "2021-01-08T13:03:02.72764",
+        "comment": []
     }
 ]
 

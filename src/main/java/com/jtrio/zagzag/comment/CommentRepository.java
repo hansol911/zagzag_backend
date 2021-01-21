@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByQnAIdOrderByCreated(Long qnaId);
+    List<Comment> findByQnAId(Long qnaId);
 }

@@ -40,18 +40,20 @@ public class QnaService {
 
     //qna조회
     public List<QnaDTO.ReadQna> readQna(Long userId, Long productId, Pageable pageable) {
-        User user = userRepository.findById(userId).orElseThrow();
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<QnA> qnas = qnaRepository.findByProductId(productId, pageable);
-        List<QnaDTO.ReadQna> qnaDTOS = new ArrayList<>(); //qnas.stream().map(q -> QnaDTO.ReadQna.toDTO(qnas, comments)).collect(Collectors.toList());
+        List<QnaDTO.ReadQna> qnaDTOS = new ArrayList<>();
         qnas.forEach(qna -> {
-            List<Comment> comments = commentRepository.findByQnAIdOrderByCreated(qna.getId());
+            List<Comment> comments = commentRepository.findByQnAId(qna.getId());
             QnaDTO.ReadQna dto = QnaDTO.ReadQna.toDTO(qna, comments);
             qnaDTOS.add(dto);
         });
-
-        if (user != null) {
-            ///
+        if (userId != null) {
+            for (int i = 0; i < qnas.size(); i++) {
+                if (userId.equals(qnas.get(i).getUser().getId())) {
+                    qnaDTOS.get(i).setQuestion(qnas.get(i).getQuestion());
+                }
+            }
         }
         return qnaDTOS;
     }
@@ -60,7 +62,7 @@ public class QnaService {
     public QnaDTO.ReadQna updateQna(QnaCommand.UpdateQna command, Long userId, Long qnaId) {
         User user = userRepository.findById(userId).orElseThrow();
         QnA qna = qnaRepository.findById(qnaId).orElseThrow(() -> new QnaNotFoundException("qna not found"));
-        List<Comment> comments = commentRepository.findByQnAIdOrderByCreated(qna.getId());
+        List<Comment> comments = commentRepository.findByQnAId(qna.getId());
         if (!qna.getUser().equals(user)) {
             throw new UserAuthorityException("cannot update qna");
         }

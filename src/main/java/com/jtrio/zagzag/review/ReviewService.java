@@ -11,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,12 +47,9 @@ public class ReviewService {
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<Review> reviews = reviewRepository.findByProductId(productId, pageable);
         List<ReviewDTO> reviewDTOS = reviews.stream().map(ReviewDTO::toDTO).collect(Collectors.toList());
-        List<Likers> likers = likersRepository.findByUserId(userId);
-        List<Long> reviewId = new ArrayList<>();
-        for (int j = 0; j < likers.size(); j++) {
-            reviewId.add(likers.get(j).getId());
-        }
         if (userId != null) {
+            List<Likers> likers = likersRepository.findByUserId(userId);
+            List<Long> reviewId = likers.stream().map(l -> l.getReview().getId()).collect(Collectors.toList());
             for (int i = 0; i < reviews.size(); i++) {
                 if (reviewId.contains(reviews.get(i).getId()))
                     reviewDTOS.get(i).setMyLike(true);

@@ -48,12 +48,11 @@ public class QnaDTO {
                 CommentDTO dto = CommentDTO.toDTO(c);
                 commentDTOS.add(dto);
             }
-
             qnaDTO.setNickname(nick);
-            qnaDTO.setQuestion(qna.getQuestion());
-            qnaDTO.setSecret(qna.isSecret());
             qnaDTO.setCreated(qna.getCreated());
             qnaDTO.setComment(commentDTOS);
+            qnaDTO.setSecret(qna.isSecret());
+            qnaDTO.setQuestion(qna.isSecret() ? "비밀글입니다." : qna.getQuestion());
             return qnaDTO;
         }
     }
