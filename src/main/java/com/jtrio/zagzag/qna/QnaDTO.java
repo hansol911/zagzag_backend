@@ -7,8 +7,8 @@ import com.jtrio.zagzag.model.QnA;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class QnaDTO {
@@ -43,11 +43,7 @@ public class QnaDTO {
             QnaDTO.ReadQna qnaDTO = new QnaDTO.ReadQna();
             String nick = qna.getUser().getEmail();
             nick = nick.replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
-            List<CommentDTO> commentDTOS = new ArrayList<>();
-            for (Comment c : comments) {
-                CommentDTO dto = CommentDTO.toDTO(c);
-                commentDTOS.add(dto);
-            }
+            List<CommentDTO> commentDTOS = comments.stream().map(CommentDTO::toDTO).collect(Collectors.toList());
             qnaDTO.setNickname(nick);
             qnaDTO.setCreated(qna.getCreated());
             qnaDTO.setSecret(qna.isSecret());
@@ -64,7 +60,7 @@ public class QnaDTO {
 
         public static QnaDTO.DeleteQna toDTO(QnA qna) {
             QnaDTO.DeleteQna qnaDTO = new QnaDTO.DeleteQna();
-            qnaDTO.setQuestion("삭제된 댓글입니다.");
+            qnaDTO.setQuestion("삭제된 글입니다.");
             qnaDTO.setQnaStatus(qna.getQnaStatus());
             return qnaDTO;
         }

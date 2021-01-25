@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.jtrio.zagzag.enums.QnAStatus.DELETED;
 
@@ -53,11 +54,7 @@ public class QnaService {
             for (int i = 0; i < qnas.size(); i++) {
                 if (userId.equals(qnas.get(i).getUser().getId())) {
                     qnaDTOS.get(i).setQuestion(qnas.get(i).getQuestion());
-                    List<CommentDTO> commentDTOS = new ArrayList<>();
-                    for (Comment c : commentRepository.findByQnAId(qnas.get(i).getId())) {
-                        CommentDTO dto = CommentDTO.toDTO(c);
-                        commentDTOS.add(dto);
-                    }
+                    List<CommentDTO> commentDTOS = commentRepository.findByQnAId(qnas.get(i).getId()).stream().map(CommentDTO::toDTO).collect(Collectors.toList());
                     qnaDTOS.get(i).setComment(commentDTOS);
                 }
             }

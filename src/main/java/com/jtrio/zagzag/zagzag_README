@@ -181,5 +181,6 @@
 
 -qna삭제
 {
+    "question" : "삭제된 글입니다.",
     "qnaStatus": "DELETED"                       //삭제됨
 }
