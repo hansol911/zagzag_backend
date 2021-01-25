@@ -51,8 +51,7 @@ public class ReviewService {
             List<Likers> likers = likersRepository.findByUserId(userId);
             List<Long> reviewId = likers.stream().map(l -> l.getReview().getId()).collect(Collectors.toList());
             for (int i = 0; i < reviews.size(); i++) {
-                if (reviewId.contains(reviews.get(i).getId()))
-                    reviewDTOS.get(i).setMyLike(true);
+                reviewDTOS.get(i).setMyLike(reviewId.contains(reviews.get(i).getId()));
             }
         }
         return reviewDTOS;

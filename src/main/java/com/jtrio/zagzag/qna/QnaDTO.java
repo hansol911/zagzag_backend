@@ -50,19 +50,21 @@ public class QnaDTO {
             }
             qnaDTO.setNickname(nick);
             qnaDTO.setCreated(qna.getCreated());
-            qnaDTO.setComment(commentDTOS);
             qnaDTO.setSecret(qna.isSecret());
             qnaDTO.setQuestion(qna.isSecret() ? "비밀글입니다." : qna.getQuestion());
+            qnaDTO.setComment(qna.isSecret() ? null : commentDTOS);
             return qnaDTO;
         }
     }
 
     @Data
     public static class DeleteQna {
+        private String question;
         private QnAStatus qnaStatus;
 
         public static QnaDTO.DeleteQna toDTO(QnA qna) {
             QnaDTO.DeleteQna qnaDTO = new QnaDTO.DeleteQna();
+            qnaDTO.setQuestion("삭제된 댓글입니다.");
             qnaDTO.setQnaStatus(qna.getQnaStatus());
             return qnaDTO;
         }

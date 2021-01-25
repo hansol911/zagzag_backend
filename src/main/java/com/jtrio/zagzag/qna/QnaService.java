@@ -1,5 +1,6 @@
 package com.jtrio.zagzag.qna;
 
+import com.jtrio.zagzag.comment.CommentDTO;
 import com.jtrio.zagzag.comment.CommentRepository;
 import com.jtrio.zagzag.exception.ProductNotFoundException;
 import com.jtrio.zagzag.exception.QnaNotFoundException;
@@ -52,6 +53,12 @@ public class QnaService {
             for (int i = 0; i < qnas.size(); i++) {
                 if (userId.equals(qnas.get(i).getUser().getId())) {
                     qnaDTOS.get(i).setQuestion(qnas.get(i).getQuestion());
+                    List<CommentDTO> commentDTOS = new ArrayList<>();
+                    for (Comment c : commentRepository.findByQnAId(qnas.get(i).getId())) {
+                        CommentDTO dto = CommentDTO.toDTO(c);
+                        commentDTOS.add(dto);
+                    }
+                    qnaDTOS.get(i).setComment(commentDTOS);
                 }
             }
         }
