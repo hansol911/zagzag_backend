@@ -25,7 +25,7 @@ public class ReviewService {
     private final LikersRepository likersRepository;
 
     //리뷰쓰기
-    public ReviewDTO createReview(ReviewCommand command, Long userId, Long orderId) {
+    public ReviewDTO.CreateReview createReview(ReviewCommand command, Long userId, Long orderId) {
         User user = userRepository.findById(userId).orElseThrow();
         ProductOrder order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("order not found"));
         Product product = productRepository.findById(order.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("product not found"));
@@ -39,14 +39,14 @@ public class ReviewService {
         Review review = reviewRepository.save(command.toReview(user, order));
         product.setTotalProductScore(reviewRepository.avgProductScore(product.getId()));
         product.setTotalDeliveryScore(reviewRepository.avgDeliveryScore(product.getId()));
-        return ReviewDTO.toDTO(review);
+        return ReviewDTO.CreateReview.toDTO(review);
     }
 
     //리뷰조회
-    public List<ReviewDTO> readReview(Long userId, Long productId, Pageable pageable) {
+    public List<ReviewDTO.ReadReview> readReview(Long userId, Long productId, Pageable pageable) {
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<Review> reviews = reviewRepository.findByProductId(productId, pageable);
-        List<ReviewDTO> reviewDTOS = reviews.stream().map(ReviewDTO::toDTO).collect(Collectors.toList());
+        List<ReviewDTO.ReadReview> reviewDTOS = reviews.stream().map(r-> ReviewDTO.ReadReview.toDTO(r, likersRepository.countLikers(r.getId()))).collect(Collectors.toList());
         if (userId != null) {
             List<Likers> likers = likersRepository.findByUserId(userId);
             List<Long> reviewId = likers.stream().map(l -> l.getReview().getId()).collect(Collectors.toList());
@@ -58,7 +58,7 @@ public class ReviewService {
     }
 
     //리뷰수정
-    public ReviewDTO updateReview(ReviewCommand command, Long userId, Long orderId) {
+    public ReviewDTO.ReadReview updateReview(ReviewCommand command, Long userId, Long orderId) {
         User user = userRepository.findById(userId).orElseThrow();
         ProductOrder order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("order not found"));
         Review review = reviewRepository.findByOrderId(orderId);
@@ -66,17 +66,18 @@ public class ReviewService {
             throw new UserAuthorityException("cannot update review");
         }
         reviewRepository.save(command.toReview(user, order));
-        return ReviewDTO.toDTO(review);
+        int like = likersRepository.countLikers(review.getId());
+        return ReviewDTO.ReadReview.toDTO(review, like);
     }
 
     //리뷰삭제
-    public ReviewDTO deleteReview(Long userId, Long id) {
+    public ReviewDTO.DeleteReview deleteReview(Long userId, Long id) {
         User user = userRepository.findById(userId).orElseThrow();
         Review review = reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException("review not found"));
         if (!review.getUser().equals(user)) {
             throw new UserAuthorityException("cannot delete review");
         }
         reviewRepository.delete(review);
-        return ReviewDTO.toDTO(review);
+        return ReviewDTO.DeleteReview.toDTO();
     }
 }

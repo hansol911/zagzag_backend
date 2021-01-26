@@ -16,22 +16,22 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public ReviewDTO createReview(@RequestBody @Valid ReviewCommand command, @AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long orderId) {
+    public ReviewDTO.CreateReview createReview(@RequestBody @Valid ReviewCommand command, @AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long orderId) {
         return reviewService.createReview(command, securityUser.getUserId(), orderId);
     }
 
     @GetMapping
-    public List<ReviewDTO> readReview(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
+    public List<ReviewDTO.ReadReview> readReview(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
         return reviewService.readReview(securityUser != null ? securityUser.getUserId() : null, productId, pageable);
     }
 
     @PutMapping(value = "/{id}")
-    public ReviewDTO updateReview(@RequestBody ReviewCommand command, @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
+    public ReviewDTO.ReadReview updateReview(@RequestBody ReviewCommand command, @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
         return reviewService.updateReview(command, securityUser.getUserId(), id);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ReviewDTO deleteReview(@AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
+    public ReviewDTO.DeleteReview deleteReview(@AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
         return reviewService.deleteReview(securityUser.getUserId(), id);
     }
 }

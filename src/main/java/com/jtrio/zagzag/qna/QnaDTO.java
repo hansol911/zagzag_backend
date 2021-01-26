@@ -19,8 +19,8 @@ public class QnaDTO {
         private boolean secret;
         private LocalDateTime created;
 
-        public static QnaDTO.CreateQna toDTO(QnA qna) {
-            QnaDTO.CreateQna qnaDTO = new QnaDTO.CreateQna();
+        public static CreateQna toDTO(QnA qna) {
+            CreateQna qnaDTO = new CreateQna();
             String nick = qna.getUser().getEmail();
             nick = nick.replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
             qnaDTO.setNickname(nick);
@@ -39,8 +39,8 @@ public class QnaDTO {
         private LocalDateTime created;
         private List<CommentDTO> comment;
 
-        public static QnaDTO.ReadQna toDTO(QnA qna, List<Comment> comments) {
-            QnaDTO.ReadQna qnaDTO = new QnaDTO.ReadQna();
+        public static ReadQna toDTO(QnA qna, List<Comment> comments) {
+            ReadQna qnaDTO = new ReadQna();
             String nick = qna.getUser().getEmail();
             nick = nick.replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
             List<CommentDTO> commentDTOS = comments.stream().map(CommentDTO::toDTO).collect(Collectors.toList());
@@ -58,8 +58,8 @@ public class QnaDTO {
         private String question;
         private QnAStatus qnaStatus;
 
-        public static QnaDTO.DeleteQna toDTO(QnA qna) {
-            QnaDTO.DeleteQna qnaDTO = new QnaDTO.DeleteQna();
+        public static DeleteQna toDTO(QnA qna) {
+            DeleteQna qnaDTO = new DeleteQna();
             qnaDTO.setQuestion("삭제된 글입니다.");
             qnaDTO.setQnaStatus(qna.getQnaStatus());
             return qnaDTO;
