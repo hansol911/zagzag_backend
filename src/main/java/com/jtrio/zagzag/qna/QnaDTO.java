@@ -39,7 +39,7 @@ public class QnaDTO {
         private LocalDateTime created;
         private List<CommentDTO> comment;
 
-        public static ReadQna toDTO(QnA qna, List<Comment> comments) {
+        public static ReadQna toDTO(QnA qna, List<Comment> comments, Long userId) {
             ReadQna qnaDTO = new ReadQna();
             String nick = qna.getUser().getEmail();
             nick = nick.replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
@@ -47,8 +47,8 @@ public class QnaDTO {
             qnaDTO.setNickname(nick);
             qnaDTO.setCreated(qna.getCreated());
             qnaDTO.setSecret(qna.isSecret());
-            qnaDTO.setQuestion(qna.isSecret() ? "비밀글입니다." : qna.getQuestion());
-            qnaDTO.setComment(qna.isSecret() ? null : commentDTOS);
+            qnaDTO.setQuestion(qna.isSecret() && !qna.getUser().getId().equals(userId) ? "비밀글입니다." : qna.getQuestion());
+            qnaDTO.setComment(qna.isSecret() && !qna.getUser().getId().equals(userId) ? null : commentDTOS);
             return qnaDTO;
         }
     }

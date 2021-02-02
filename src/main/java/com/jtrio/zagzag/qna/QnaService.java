@@ -1,6 +1,5 @@
 package com.jtrio.zagzag.qna;
 
-import com.jtrio.zagzag.comment.CommentDTO;
 import com.jtrio.zagzag.comment.CommentRepository;
 import com.jtrio.zagzag.exception.ProductNotFoundException;
 import com.jtrio.zagzag.exception.QnaNotFoundException;
@@ -19,7 +18,6 @@ import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.jtrio.zagzag.enums.QnAStatus.DELETED;
 
@@ -47,18 +45,9 @@ public class QnaService {
         List<QnaDTO.ReadQna> qnaDTOS = new ArrayList<>();
         qnas.forEach(qna -> {
             List<Comment> comments = commentRepository.findByQnAId(qna.getId());
-            QnaDTO.ReadQna dto = QnaDTO.ReadQna.toDTO(qna, comments);
+            QnaDTO.ReadQna dto = QnaDTO.ReadQna.toDTO(qna, comments, userId);
             qnaDTOS.add(dto);
         });
-        if (userId != null) {
-            for (int i = 0; i < qnas.size(); i++) {
-                if (userId.equals(qnas.get(i).getUser().getId())) {
-                    qnaDTOS.get(i).setQuestion(qnas.get(i).getQuestion());
-                    List<CommentDTO> commentDTOS = commentRepository.findByQnAId(qnas.get(i).getId()).stream().map(CommentDTO::toDTO).collect(Collectors.toList());
-                    qnaDTOS.get(i).setComment(commentDTOS);
-                }
-            }
-        }
         return qnaDTOS;
     }
 
@@ -71,7 +60,7 @@ public class QnaService {
             throw new UserAuthorityException("cannot update qna");
         }
         qnaRepository.save(command.toQna(user, qna));
-        return QnaDTO.ReadQna.toDTO(qna, comments);
+        return QnaDTO.ReadQna.toDTO(qna, comments, userId);
     }
 
     //qna삭제

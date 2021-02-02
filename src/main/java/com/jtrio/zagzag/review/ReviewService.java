@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @Transactional
@@ -46,13 +47,13 @@ public class ReviewService {
     public List<ReviewDTO.ReadReview> readReview(Long userId, Long productId, Pageable pageable) {
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<Review> reviews = reviewRepository.findByProductId(productId, pageable);
-        List<ReviewDTO.ReadReview> reviewDTOS = reviews.stream().map(r-> ReviewDTO.ReadReview.toDTO(r, likersRepository.countLikers(r.getId()))).collect(Collectors.toList());
+        List<ReviewDTO.ReadReview> reviewDTOS = reviews.stream().map(r -> ReviewDTO.ReadReview.toDTO(r, likersRepository.countLikers(r.getId()))).collect(Collectors.toList());
         if (userId != null) {
             List<Likers> likers = likersRepository.findByUserId(userId);
             List<Long> reviewId = likers.stream().map(l -> l.getReview().getId()).collect(Collectors.toList());
-            for (int i = 0; i < reviews.size(); i++) {
+            IntStream.range(0, reviews.size()).forEach(i -> {
                 reviewDTOS.get(i).setMyLike(reviewId.contains(reviews.get(i).getId()));
-            }
+            });
         }
         return reviewDTOS;
     }
@@ -66,8 +67,8 @@ public class ReviewService {
             throw new UserAuthorityException("cannot update review");
         }
         reviewRepository.save(command.toReview(user, order));
-        int like = likersRepository.countLikers(review.getId());
-        return ReviewDTO.ReadReview.toDTO(review, like);
+        int liker = likersRepository.countLikers(review.getId());
+        return ReviewDTO.ReadReview.toDTO(review, liker);
     }
 
     //리뷰삭제

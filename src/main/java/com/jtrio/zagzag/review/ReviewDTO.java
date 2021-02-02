@@ -39,7 +39,7 @@ public class ReviewDTO {
         private int likers;
         private boolean myLike;
 
-        public static ReadReview toDTO(Review review, int like) {
+        public static ReadReview toDTO(Review review, int liker) {
             ReadReview reviewDTO = new ReadReview();
             String nick = review.getUser().getEmail().replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
             reviewDTO.setNickname(nick);
@@ -47,7 +47,7 @@ public class ReviewDTO {
             reviewDTO.setImage(review.getImage());
             reviewDTO.setProductScore(review.getProductScore());
             reviewDTO.setDeliveryScore(review.getDeliveryScore());
-            reviewDTO.setLikers(like);
+            reviewDTO.setLikers(liker);
             reviewDTO.setCreated(review.getCreated());
             return reviewDTO;
         }
