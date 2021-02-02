@@ -28,8 +28,7 @@ public class QnA {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-    @OneToMany
-    @JoinColumn(name = "comment_id")
+    @OneToMany(mappedBy = "qnA")
     private List<Comment> comment;
 
     @CreatedDate

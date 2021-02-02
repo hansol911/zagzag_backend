@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.jtrio.zagzag.enums.QnAStatus.DELETED;
 
@@ -42,13 +43,7 @@ public class QnaService {
     public List<QnaDTO.ReadQna> readQna(Long userId, Long productId, Pageable pageable) {
         productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("product not found"));
         List<QnA> qnas = qnaRepository.findByProductId(productId, pageable);
-        List<QnaDTO.ReadQna> qnaDTOS = new ArrayList<>();
-        qnas.forEach(qna -> {
-            List<Comment> comments = commentRepository.findByQnAId(qna.getId());
-            QnaDTO.ReadQna dto = QnaDTO.ReadQna.toDTO(qna, comments, userId);
-            qnaDTOS.add(dto);
-        });
-        return qnaDTOS;
+        return qnas.stream().map(qna -> QnaDTO.ReadQna.toDTO(qna, commentRepository.findByQnAId(qna.getId()), userId)).collect(Collectors.toList());
     }
 
     //qna수정

@@ -1,6 +1,7 @@
 package com.jtrio.zagzag.comment;
 
 import com.jtrio.zagzag.exception.QnaNotFoundException;
+import com.jtrio.zagzag.exception.UserAuthorityException;
 import com.jtrio.zagzag.model.Comment;
 import com.jtrio.zagzag.model.QnA;
 import com.jtrio.zagzag.model.User;
@@ -22,6 +23,9 @@ public class CommentService {
     public CommentDTO createComment(CommentCommand command, Long userId, Long qnaId) {
         User user = userRepository.findById(userId).orElseThrow();
         QnA qna = qnaRepository.findById(qnaId).orElseThrow(() -> new QnaNotFoundException("qna not found"));
+        if (qna.isSecret() && !qna.getUser().equals(user)) {
+            throw new UserAuthorityException("cannot create comment");
+        }
         Comment comment = commentRepository.save(command.toComment(user, qna));
         return CommentDTO.toDTO(comment);
     }
