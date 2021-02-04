@@ -1,6 +1,7 @@
 package com.jtrio.zagzag.review;
 
 import com.jtrio.zagzag.model.Review;
+import com.jtrio.zagzag.util.Nickname;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 public class ReviewDTO {
     @Data
     public static class CreateReview {
-        private String nickname;
+        private String userEmail;
         private String content;
         private String image;
         private byte productScore;
@@ -18,8 +19,7 @@ public class ReviewDTO {
 
         public static CreateReview toDTO(Review review) {
             CreateReview reviewDTO = new CreateReview();
-            String nick = review.getUser().getEmail().replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
-            reviewDTO.setNickname(nick);
+            reviewDTO.setUserEmail(review.getUser().getEmail());
             reviewDTO.setContent(review.getContent());
             reviewDTO.setImage(review.getImage());
             reviewDTO.setProductScore(review.getProductScore());
@@ -41,8 +41,7 @@ public class ReviewDTO {
 
         public static ReadReview toDTO(Review review, int liker) {
             ReadReview reviewDTO = new ReadReview();
-            String nick = review.getUser().getEmail().replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
-            reviewDTO.setNickname(nick);
+            reviewDTO.setNickname(Nickname.getNick(review.getUser().getEmail()));
             reviewDTO.setContent(review.getContent());
             reviewDTO.setImage(review.getImage());
             reviewDTO.setProductScore(review.getProductScore());

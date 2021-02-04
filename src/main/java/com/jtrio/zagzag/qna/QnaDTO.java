@@ -4,6 +4,7 @@ import com.jtrio.zagzag.comment.CommentDTO;
 import com.jtrio.zagzag.enums.QnAStatus;
 import com.jtrio.zagzag.model.Comment;
 import com.jtrio.zagzag.model.QnA;
+import com.jtrio.zagzag.util.Nickname;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,16 +15,14 @@ import java.util.stream.Collectors;
 public class QnaDTO {
     @Data
     public static class CreateQna {
-        private String nickname;
+        private String userEmail;
         private String question;
         private boolean secret;
         private LocalDateTime created;
 
         public static CreateQna toDTO(QnA qna) {
             CreateQna qnaDTO = new CreateQna();
-            String nick = qna.getUser().getEmail();
-            nick = nick.replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
-            qnaDTO.setNickname(nick);
+            qnaDTO.setUserEmail(qna.getUser().getEmail());
             qnaDTO.setQuestion(qna.getQuestion());
             qnaDTO.setSecret(qna.isSecret());
             qnaDTO.setCreated(qna.getCreated());
@@ -41,13 +40,11 @@ public class QnaDTO {
 
         public static ReadQna toDTO(QnA qna, List<Comment> comments, Long userId) {
             ReadQna qnaDTO = new ReadQna();
-            String nick = qna.getUser().getEmail();
-            nick = nick.replaceAll("([\\w.])(?:[\\w.]*)(@.*)", "$1****$2");
             List<CommentDTO> commentDTOS = comments.stream().map(CommentDTO::toDTO).collect(Collectors.toList());
-            qnaDTO.setNickname(nick);
+            qnaDTO.setNickname(Nickname.getNick(qna.getUser().getEmail()));
             qnaDTO.setCreated(qna.getCreated());
             qnaDTO.setSecret(qna.isSecret());
-            qnaDTO.setQuestion(qna.isSecret() && !qna.getUser().getId().equals(userId) ? "비밀글입니다." : qna.getQuestion());
+            qnaDTO.setQuestion(qna.getQnaStatus() == QnAStatus.DELETED ? "사용자의 요청에 의해 삭제되었습니다." : (qna.isSecret() && !qna.getUser().getId().equals(userId) ? "비밀글입니다." : qna.getQuestion()));
             qnaDTO.setComment(qna.isSecret() && !qna.getUser().getId().equals(userId) ? null : commentDTOS);
             return qnaDTO;
         }

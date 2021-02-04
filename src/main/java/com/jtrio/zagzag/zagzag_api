@@ -106,7 +106,7 @@
 <Review>
 -review등록
 {
-    "nickname": "m****@naver.com",                   //id 마스킹처리
+    "userEamil": "monkey@naver.com",                 //user email
     "content": "this is review",                     //review 내용
     "image": "abc.png",                              //사진
     "productScore": 6,                               //상품점수
@@ -146,7 +146,7 @@
 <QnA>
 - qna등록
 {
-    "nickname": "b****@naver.com",                //id 마스킹처리
+    "userEmail": "bb@naver.com",                  //user email
     "question": "0108 문의",                       //문의내용
     "secret": true,                               //비밀여부
     "created": "2021-01-08T13:03:02.7276401"      //문의날짜

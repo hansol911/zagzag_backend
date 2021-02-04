@@ -20,10 +20,10 @@ public class LoggingAspect {
     public void logging(JoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         Object securityUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("userId: {}, request: {}, params: {}", logInfo(securityUser), request.getRequestURL(), joinPoint.getArgs());
+        log.info("userId: {}, request: {}, params: {}", getUserId(securityUser), request.getRequestURL(), joinPoint.getArgs());
     }
 
-    public Long logInfo(Object securityUser) {
+    public Long getUserId(Object securityUser) {
         Long userId;
         if (securityUser instanceof SecurityUser) {
             userId = ((SecurityUser) securityUser).getUserId();
