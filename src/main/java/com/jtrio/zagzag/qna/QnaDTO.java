@@ -51,6 +51,26 @@ public class QnaDTO {
     }
 
     @Data
+    public static class UpdateQna {
+        private String userEmail;
+        private String question;
+        private boolean secret;
+        private LocalDateTime updated;
+        private List<CommentDTO> comment;
+
+        public static UpdateQna toDTO(QnA qna, List<Comment> comments) {
+            UpdateQna qnaDTO = new UpdateQna();
+            List<CommentDTO> commentDTOS = comments.stream().map(CommentDTO::toDTO).collect(Collectors.toList());
+            qnaDTO.setUserEmail(qna.getUser().getEmail());
+            qnaDTO.setQuestion(qna.getQuestion());
+            qnaDTO.setComment(commentDTOS);
+            qnaDTO.setSecret(qna.isSecret());
+            qnaDTO.setUpdated(qna.getUpdated());
+            return qnaDTO;
+        }
+    }
+
+    @Data
     public static class DeleteQna {
         private String question;
         private QnAStatus qnaStatus;

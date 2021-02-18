@@ -47,7 +47,7 @@ public class QnaService {
     }
 
     //qna수정
-    public QnaDTO.ReadQna updateQna(QnaCommand.UpdateQna command, Long userId, Long qnaId) {
+    public QnaDTO.UpdateQna updateQna(QnaCommand.UpdateQna command, Long userId, Long qnaId) {
         User user = userRepository.findById(userId).orElseThrow();
         QnA qna = qnaRepository.findById(qnaId).orElseThrow(() -> new QnaNotFoundException("qna not found"));
         List<Comment> comments = commentRepository.findByQnAId(qna.getId());
@@ -55,7 +55,7 @@ public class QnaService {
             throw new UserAuthorityException("cannot update qna");
         }
         qnaRepository.save(command.toQna(user, qna));
-        return QnaDTO.ReadQna.toDTO(qna, comments, userId);
+        return QnaDTO.UpdateQna.toDTO(qna, comments);
     }
 
     //qna삭제

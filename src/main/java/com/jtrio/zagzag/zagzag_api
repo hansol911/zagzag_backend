@@ -172,12 +172,13 @@
 
 -qna수정
 {
-    "nickname": "b****@naver.com",               //id 마스킹처리
-    "question": "modify~~~",                     //수정된 문의
+    "userEmail": "bb@naver.com",                 //user email
+    "question": "0206 수정",                      //수정된 문의
     "secret": false,                             //비밀여부
-    "created": "2021-01-07T15:41:27.482764",     //문의날짜 -> 수정날짜로 바꿀예정
+    "updated": "2021-02-06T10:31:30.39506",      //수정날짜
     "comment": []                                //댓글
 }
+
 
 -qna삭제
 {

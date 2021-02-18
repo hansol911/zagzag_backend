@@ -26,7 +26,7 @@ public class QnaController {
     }
 
     @PutMapping(value = "/{id}")
-    public QnaDTO.ReadQna updateQna(@RequestBody QnaCommand.UpdateQna command, @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
+    public QnaDTO.UpdateQna updateQna(@RequestBody QnaCommand.UpdateQna command, @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
         return qnaService.updateQna(command, securityUser.getUserId(), id);
     }
 
