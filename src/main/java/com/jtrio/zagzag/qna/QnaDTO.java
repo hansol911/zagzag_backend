@@ -4,7 +4,7 @@ import com.jtrio.zagzag.comment.CommentDTO;
 import com.jtrio.zagzag.enums.QnAStatus;
 import com.jtrio.zagzag.model.Comment;
 import com.jtrio.zagzag.model.QnA;
-import com.jtrio.zagzag.util.Nickname;
+import com.jtrio.zagzag.util.NicknameUtil;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -41,7 +41,7 @@ public class QnaDTO {
         public static ReadQna toDTO(QnA qna, List<Comment> comments, Long userId) {
             ReadQna qnaDTO = new ReadQna();
             List<CommentDTO> commentDTOS = comments.stream().map(CommentDTO::toDTO).collect(Collectors.toList());
-            qnaDTO.setNickname(Nickname.getNick(qna.getUser().getEmail()));
+            qnaDTO.setNickname(NicknameUtil.getNick(qna.getUser().getEmail()));
             qnaDTO.setCreated(qna.getCreated());
             qnaDTO.setSecret(qna.isSecret());
             qnaDTO.setQuestion(qna.getQnaStatus() == QnAStatus.DELETED ? "사용자의 요청에 의해 삭제되었습니다." : (qna.isSecret() && !qna.getUser().getId().equals(userId) ? "비밀글입니다." : qna.getQuestion()));

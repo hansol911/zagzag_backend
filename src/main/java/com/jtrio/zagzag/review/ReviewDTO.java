@@ -1,7 +1,7 @@
 package com.jtrio.zagzag.review;
 
 import com.jtrio.zagzag.model.Review;
-import com.jtrio.zagzag.util.Nickname;
+import com.jtrio.zagzag.util.NicknameUtil;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -41,7 +41,7 @@ public class ReviewDTO {
 
         public static ReadReview toDTO(Review review, int liker) {
             ReadReview reviewDTO = new ReadReview();
-            reviewDTO.setNickname(Nickname.getNick(review.getUser().getEmail()));
+            reviewDTO.setNickname(NicknameUtil.getNick(review.getUser().getEmail()));
             reviewDTO.setContent(review.getContent());
             reviewDTO.setImage(review.getImage());
             reviewDTO.setProductScore(review.getProductScore());
