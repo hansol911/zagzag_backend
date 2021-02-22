@@ -2,8 +2,8 @@ package com.jtrio.zagzag.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class CheckEmailException extends ApiException{
-    public CheckEmailException (String msg){
+public class CheckEmailException extends ApiException {
+    public CheckEmailException(String msg) {
         super(msg);
     }
 

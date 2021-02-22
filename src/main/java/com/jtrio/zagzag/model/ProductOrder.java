@@ -1,8 +1,6 @@
 package com.jtrio.zagzag.model;
 
-import com.jtrio.zagzag.order.OrderDTO;
-import com.jtrio.zagzag.product.ProductDTO;
-import jdk.jfr.DataAmount;
+import com.jtrio.zagzag.enums.OrderStatus;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -20,6 +18,8 @@ public class ProductOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer orderPrice;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

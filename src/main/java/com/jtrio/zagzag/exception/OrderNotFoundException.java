@@ -3,7 +3,7 @@ package com.jtrio.zagzag.exception;
 import org.springframework.http.HttpStatus;
 
 public class OrderNotFoundException extends ApiException {
-    public OrderNotFoundException (String msg){
+    public OrderNotFoundException(String msg) {
         super(msg);
     }
 

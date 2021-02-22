@@ -1,8 +1,5 @@
 package com.jtrio.zagzag.product;
 
-import com.jtrio.zagzag.model.Product;
-import com.jtrio.zagzag.user.UserCommand;
-import com.jtrio.zagzag.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +19,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findProductByCategory(@RequestParam Long categoryId, Pageable pageable){
+    public List<ProductDTO> findProductByCategory(@RequestParam Long categoryId, Pageable pageable) {
         return productService.findProductByCategory(categoryId, pageable);
     }
 

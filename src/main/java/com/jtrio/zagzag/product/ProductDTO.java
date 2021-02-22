@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class ProductDTO {
-    private Long id;
     private String name;
     private Integer price;
     private String image;
@@ -15,17 +14,14 @@ public class ProductDTO {
     private Long categoryId;
     private LocalDateTime created;
 
-    public static ProductDTO toDTO(Product product){
+    public static ProductDTO toDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setId(product.getId());
         productDTO.setName(product.getName());
         productDTO.setPrice(product.getPrice());
         productDTO.setImage(product.getImage());
         productDTO.setQuantity(product.getQuantity());
         productDTO.setCreated(product.getCreated());
         productDTO.setCategoryId(product.getCategory().getId());
-
         return productDTO;
     }
-
 }

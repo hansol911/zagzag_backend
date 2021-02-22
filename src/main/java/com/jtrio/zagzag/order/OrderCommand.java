@@ -5,9 +5,10 @@ import com.jtrio.zagzag.model.ProductOrder;
 import com.jtrio.zagzag.model.User;
 import lombok.Data;
 
-import javax.persistence.criteria.Order;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+
+import static com.jtrio.zagzag.enums.OrderStatus.NORMAL;
+
 @Data
 public class OrderCommand {
     @NotBlank
@@ -18,7 +19,7 @@ public class OrderCommand {
         order.setOrderPrice(product.getPrice());
         order.setUser(user);
         order.setProduct(product);
-
+        order.setOrderStatus(NORMAL);
         return order;
     }
 }

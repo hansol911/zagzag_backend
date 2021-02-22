@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -27,9 +28,9 @@ public class ProductService {
     }
 
     //카테고리별 상품조회
-    public List<Product> findProductByCategory(Long categoryId, Pageable pageable){
+    public List<ProductDTO> findProductByCategory(Long categoryId, Pageable pageable) {
         List<Product> products = productRepository.findByCategoryId(categoryId, pageable);
-        return products;
+        return products.stream().map(ProductDTO::toDTO).collect(Collectors.toList());
     }
 
     //상품상세조회
@@ -37,5 +38,4 @@ public class ProductService {
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("해당 상품이 존재하지 않음"));
         return ProductDTO.toDTO(product);
     }
-
 }

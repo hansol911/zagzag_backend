@@ -10,33 +10,23 @@ import javax.validation.constraints.Size;
 
 @Data
 public class ReviewCommand {
+    @NotBlank
+    private String content;
+    private String image;
+    @Size(min = 1, max = 10)
+    private byte productScore;
+    @Size(min = 1, max = 10)
+    private byte deliveryScore;
 
-    @Data
-    public static class CreateReview{
-        @NotBlank
-        private String content;
-        private String image;
-        @Size(min=1, max=10)
-        private byte productScore;
-        @Size(min=1, max=10)
-        private byte deliveryScore;
-
-        public Review toReview(User user, ProductOrder order) {
-            Review review = new Review();
-            review.setContent(content);
-            review.setImage(image);
-            review.setProductScore(productScore);
-            review.setDeliveryScore(deliveryScore);
-            review.setUser(user);
-            review.setProduct(order.getProduct());
-            review.setOrder(order);
-
-            return review;
-        }
+    public Review toReview(User user, ProductOrder order) {
+        Review review = new Review();
+        review.setContent(content);
+        review.setImage(image);
+        review.setProductScore(productScore);
+        review.setDeliveryScore(deliveryScore);
+        review.setUser(user);
+        review.setProduct(order.getProduct());
+        review.setOrder(order);
+        return review;
     }
-
-    /*public static class ReviewLike {
-
-    }*/
-
 }
