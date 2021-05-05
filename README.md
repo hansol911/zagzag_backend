@@ -1,7 +1,7 @@
 # zagzag_backend 
 ### 👀 구현 내용  
 
-zagzag 쇼핑몰 (TMON clone REST API)
+#### zagzag 쇼핑몰 (TMON clone REST API)
 - 카테고리, 상품, QnA, 리뷰 CRUD가 있는 쇼핑몰 프로그램
 - JWT 인증을 통한 로그인
 
