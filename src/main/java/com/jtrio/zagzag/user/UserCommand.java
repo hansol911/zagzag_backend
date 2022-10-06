@@ -2,6 +2,7 @@ package com.jtrio.zagzag.user;
 
 import com.jtrio.zagzag.enums.Gender;
 import com.jtrio.zagzag.model.User;
+import com.jtrio.zagzag.security.UserRole;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -19,7 +20,10 @@ public class UserCommand {
         private String name;
         @NotBlank
         private Gender gender;
+        @NotBlank
         private String addr;
+        @NotBlank
+        private UserRole role;
 
         public User toUser() {
             User user = new User();
@@ -28,7 +32,7 @@ public class UserCommand {
             user.setName(name);
             user.setAddr(addr);
             user.setGender(gender);
-
+            user.setRole(role);
             return user;
         }
     }
@@ -41,7 +45,6 @@ public class UserCommand {
         public User toUser(User user) {
             user.setName(name);
             user.setAddr(addr);
-
             return user;
         }
     }

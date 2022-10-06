@@ -1,28 +1,37 @@
 package com.jtrio.zagzag.review;
 
-import com.jtrio.zagzag.model.Review;
+import com.jtrio.zagzag.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("reviews")
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @GetMapping(value = "/users/{id}")
-    public ResponseEntity<List<Review>> findByLiker(@PathVariable("id") Long id){
-        List<Review> review = reviewService.findByLiker(id);
-        return new ResponseEntity<List<Review>>(review, HttpStatus.OK);
+    @PostMapping
+    public ReviewDTO.CreateReview createReview(@RequestBody @Valid ReviewCommand command, @AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long orderId) {
+        return reviewService.createReview(command, securityUser.getUserId(), orderId);
+    }
+
+    @GetMapping
+    public List<ReviewDTO.ReadReview> readReview(@AuthenticationPrincipal SecurityUser securityUser, @RequestParam Long productId, Pageable pageable) {
+        return reviewService.readReview(securityUser != null ? securityUser.getUserId() : null, productId, pageable);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ReviewDTO.ReadReview updateReview(@RequestBody ReviewCommand command, @AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
+        return reviewService.updateReview(command, securityUser.getUserId(), id);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ReviewDTO.DeleteReview deleteReview(@AuthenticationPrincipal SecurityUser securityUser, @PathVariable Long id) {
+        return reviewService.deleteReview(securityUser.getUserId(), id);
     }
 }

@@ -18,6 +18,13 @@ public class Product {
     private String name;
     private Integer price;
     private String image;
+    private byte totalProductScore;
+    private byte totalDeliveryScore;
+    private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @CreatedDate
     private LocalDateTime created;
